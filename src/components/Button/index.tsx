@@ -1,11 +1,11 @@
-import { Text, TouchableOpacity, TouchableOpacityProps } from "react-native";
+import { Text, TouchableOpacity, TouchableOpacityProps } from 'react-native';
 
 import { styles } from './style';
 
 type ButtonProps = TouchableOpacityProps & {
   icon: React.ReactNode;
   label: string;
-}
+};
 
 export default function Button({ icon, label, ...rest }: ButtonProps) {
   return (

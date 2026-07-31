@@ -1,13 +1,14 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
+import { MaterialIcons } from '@expo/vector-icons';
+
+import Button from '@/components/Button';
 
 export default function App() {
   return (
     <SafeAreaProvider>
       <SafeAreaView>
-        <Text>Orçamentos de serviços</Text>
-        <StatusBar style="auto" />
+        <Button icon={<MaterialIcons name="add" size={22} color="#FFFFFF" />} label="Novo" />
       </SafeAreaView>
     </SafeAreaProvider>
   );

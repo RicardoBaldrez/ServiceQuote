@@ -8,11 +8,12 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderRadius: 999,
+    backgroundColor: '#FAFAFA',
+    flex: 1,
   },
   input: {
     fontSize: 16,
     color: '#4A4A4A',
     marginLeft: 8,
-    width: 294,
   },
 });

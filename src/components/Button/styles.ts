@@ -6,9 +6,9 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'flex-start',
     padding: 12,
-    backgroundColor: '#6a46eb',
+    backgroundColor: '#6A46Eb',
     borderRadius: 999,
-    width: 98,
+    height: 48,
   },
   label: {
     color: '#FFFFFF',

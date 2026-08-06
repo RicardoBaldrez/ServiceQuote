@@ -29,7 +29,8 @@ export const styles = StyleSheet.create({
     color: '#0F0F0F',
   },
   content: {
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingBottom: 20,
   },
   contentContainer: {
     flexDirection: 'row',
@@ -37,7 +38,7 @@ export const styles = StyleSheet.create({
     marginBottom: 12,
   },
   contentItem: {
-    marginBottom: 20,
+    marginTop: 20,
   },
   titleContent: {
     fontSize: 12,

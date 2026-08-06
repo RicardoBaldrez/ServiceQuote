@@ -1,7 +1,7 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { Checkbox } from 'expo-checkbox';
 import { useState } from 'react';
-import { Pressable, Text, View } from 'react-native';
+import { Pressable, Text, TouchableOpacity, View } from 'react-native';
 
 import Button from '@/components/Button';
 import Header from '@/components/Header';
@@ -10,7 +10,11 @@ import { StatusType } from '@/components/Status/types';
 
 import { styles } from './styles';
 
-export default function BottomSheetFilter() {
+interface BottomSheetFilterProps {
+  onClose: () => void;
+}
+
+export default function BottomSheetFilter({ onClose }: BottomSheetFilterProps) {
   const [checked, setChecked] = useState<StatusType[]>([]);
   const [ordenation, setOrdenation] = useState('Mais recente');
 
@@ -41,7 +45,9 @@ export default function BottomSheetFilter() {
         <Header>
           <View style={styles.header}>
             <Text style={styles.title}>Filtrar e ordenar</Text>
-            <MaterialIcons name="close" size={20} color="#4A4A4A" />
+            <TouchableOpacity onPress={onClose}>
+              <MaterialIcons name="close" size={20} color="#4A4A4A" />
+            </TouchableOpacity>
           </View>
         </Header>
         <View style={styles.content}>
@@ -81,7 +87,7 @@ export default function BottomSheetFilter() {
                       color: ordenation === option ? '#6A46EB' : '#676767',
                     }}
                   />
-                  <Text key={option}>{option}</Text>;
+                  <Text key={option}>{option}</Text>
                 </Pressable>
               );
             })}

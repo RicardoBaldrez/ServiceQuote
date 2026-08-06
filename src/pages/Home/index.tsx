@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { FlatList, View } from 'react-native';
 
 import FilterButton from '@/components/FilterButton';
@@ -12,6 +13,9 @@ import HomeFilter from '@/pages/Home/components/HomeFilter';
 import HomeHeader from '@/pages/Home/components/HomeHeader';
 
 export default function HomePage() {
+  const [showBottomSheetFilter, setShowBottomSheetFilter] =
+    useState<boolean>(false);
+
   const quotes = [
     {
       id: 1,
@@ -73,7 +77,7 @@ export default function HomePage() {
         }}
       >
         <HomeFilter />
-        <FilterButton />
+        <FilterButton onPress={() => setShowBottomSheetFilter(true)} />
       </View>
       <FlatList
         data={quotes}
@@ -87,7 +91,9 @@ export default function HomePage() {
           />
         )}
       />
-      <BottomSheetFilter />
+      {showBottomSheetFilter && (
+        <BottomSheetFilter onClose={() => setShowBottomSheetFilter(false)} />
+      )}
     </>
   );
 }

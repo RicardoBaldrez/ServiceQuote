@@ -1,15 +1,6 @@
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
-  container: {
-    borderWidth: 1,
-    borderColor: '#F0F0F0',
-    backgroundColor: '#FAFAFA',
-    padding: 16,
-    marginHorizontal: 20,
-    borderRadius: 8,
-    marginBottom: 8,
-  },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',

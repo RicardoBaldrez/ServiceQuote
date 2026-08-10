@@ -1,8 +1,11 @@
+import { MaterialIcons } from '@expo/vector-icons';
 import { useState } from 'react';
-import { FlatList, View } from 'react-native';
+import { FlatList, View, Text } from 'react-native';
 
 import FilterButton from '@/components/FilterButton';
 import Header from '@/components/Header';
+import InfoCard from '@/components/InfoCard';
+import Input from '@/components/Input';
 import QuoteCard from '@/components/QuoteCard';
 import { StatusType } from '@/components/Status/types';
 
@@ -73,14 +76,16 @@ export default function HomePage() {
           marginHorizontal: 20,
           marginVertical: 24,
           flexDirection: 'row',
-          justifyContent: 'space-between',
         }}
       >
-        <HomeFilter />
+        <View style={{ flex: 1 }}>
+          <HomeFilter />
+        </View>
         <FilterButton onPress={() => setShowBottomSheetFilter(true)} />
       </View>
       <FlatList
         data={quotes}
+        contentContainerStyle={{ gap: 12 }}
         renderItem={({ item }) => (
           <QuoteCard
             key={item.id}
@@ -94,6 +99,26 @@ export default function HomePage() {
       {showBottomSheetFilter && (
         <BottomSheetFilter onClose={() => setShowBottomSheetFilter(false)} />
       )}
+      <InfoCard>
+        <Header>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+            <MaterialIcons name="storefront" size={24} color="black" />
+            <Text>Informações gerais</Text>
+          </View>
+        </Header>
+        <View style={{ padding: 16, gap: 12 }}>
+          <Input
+            placeholder="Buscar"
+            placeholderTextColor="#676767"
+            hasIcon={false}
+          />
+          <Input
+            placeholder="Buscar"
+            placeholderTextColor="#676767"
+            hasIcon={false}
+          />
+        </View>
+      </InfoCard>
     </>
   );
 }

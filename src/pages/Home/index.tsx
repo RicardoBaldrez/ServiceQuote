@@ -80,19 +80,21 @@ export default function HomePage() {
         </View>
         <FilterButton onPress={() => setShowBottomSheetFilter(true)} />
       </View>
-      <FlatList
-        data={quotes}
-        contentContainerStyle={{ gap: 12 }}
-        renderItem={({ item }) => (
-          <QuoteCard
-            key={item.id}
-            title={item.client}
-            description={item.title}
-            price={formatCurrency(item.price)}
-            status={item.status}
-          />
-        )}
-      />
+      <View style={{ marginHorizontal: 20 }}>
+        <FlatList
+          data={quotes}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <QuoteCard
+              key={item.id}
+              title={item.client}
+              description={item.title}
+              price={formatCurrency(item.price)}
+              status={item.status}
+            />
+          )}
+        />
+      </View>
       {showBottomSheetFilter && (
         <BottomSheetFilter onClose={() => setShowBottomSheetFilter(false)} />
       )}

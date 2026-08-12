@@ -1,7 +1,13 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { Checkbox } from 'expo-checkbox';
-import { useState } from 'react';
-import { Pressable, Text, TouchableOpacity, View } from 'react-native';
+import { useEffect, useRef, useState } from 'react';
+import {
+  Animated,
+  Pressable,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 import Button from '@/components/Button';
 import Header from '@/components/Header';
@@ -14,9 +20,14 @@ interface BottomSheetFilterProps {
   onClose: () => void;
 }
 
+const SHEET_OFFSET = 500;
+
 export default function BottomSheetFilter({ onClose }: BottomSheetFilterProps) {
   const [checked, setChecked] = useState<StatusType[]>([]);
   const [ordenation, setOrdenation] = useState('Mais recente');
+
+  const translateY = useRef(new Animated.Value(SHEET_OFFSET)).current;
+  const overlayOpacity = useRef(new Animated.Value(0)).current;
 
   const ordenationOptions = [
     'Mais recente',
@@ -24,6 +35,38 @@ export default function BottomSheetFilter({ onClose }: BottomSheetFilterProps) {
     'Maior valor',
     'Menor valor',
   ];
+
+  useEffect(() => {
+    Animated.parallel([
+      Animated.timing(translateY, {
+        toValue: 0,
+        duration: 250,
+        useNativeDriver: true,
+      }),
+      Animated.timing(overlayOpacity, {
+        toValue: 1,
+        duration: 250,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, [overlayOpacity, translateY]);
+
+  const handleClose = () => {
+    Animated.parallel([
+      Animated.timing(translateY, {
+        toValue: SHEET_OFFSET,
+        duration: 200,
+        useNativeDriver: true,
+      }),
+      Animated.timing(overlayOpacity, {
+        toValue: 0,
+        duration: 200,
+        useNativeDriver: true,
+      }),
+    ]).start(({ finished }) => {
+      if (finished) onClose();
+    });
+  };
 
   const handleChecked = (status: StatusType) => {
     setChecked((prevStatus: StatusType[]) => {
@@ -40,12 +83,16 @@ export default function BottomSheetFilter({ onClose }: BottomSheetFilterProps) {
 
   return (
     <>
-      <View style={styles.overlay} />
-      <View style={styles.container}>
+      <Animated.View style={[styles.overlay, { opacity: overlayOpacity }]}>
+        <Pressable style={styles.overlayPressable} onPress={handleClose} />
+      </Animated.View>
+      <Animated.View
+        style={[styles.container, { transform: [{ translateY }] }]}
+      >
         <Header>
           <View style={styles.header}>
             <Text style={styles.title}>Filtrar e ordenar</Text>
-            <TouchableOpacity onPress={onClose}>
+            <TouchableOpacity onPress={handleClose}>
               <MaterialIcons name="close" size={20} color="#4A4A4A" />
             </TouchableOpacity>
           </View>
@@ -106,7 +153,7 @@ export default function BottomSheetFilter({ onClose }: BottomSheetFilterProps) {
             icon={<MaterialIcons name="check" size={24} color="#FFFFFF" />}
           />
         </View>
-      </View>
+      </Animated.View>
     </>
   );
 }

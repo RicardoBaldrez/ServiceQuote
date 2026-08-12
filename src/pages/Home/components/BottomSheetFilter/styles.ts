@@ -9,6 +9,9 @@ export const styles = StyleSheet.create({
     bottom: 0,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
+  overlayPressable: {
+    flex: 1,
+  },
   container: {
     zIndex: 1000,
     position: 'absolute',
@@ -19,6 +22,7 @@ export const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
   },
   header: {
+    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

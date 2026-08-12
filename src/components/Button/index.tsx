@@ -1,4 +1,10 @@
-import { Text, TouchableOpacity, TouchableOpacityProps } from 'react-native';
+import {
+  StyleProp,
+  Text,
+  TouchableOpacity,
+  TouchableOpacityProps,
+  ViewStyle,
+} from 'react-native';
 
 import { styles } from './styles';
 
@@ -6,20 +12,23 @@ type ButtonProps = TouchableOpacityProps & {
   icon?: React.ReactNode;
   label: string;
   variant?: 'primary' | 'secondary';
+  style?: StyleProp<ViewStyle>;
 };
 
 export default function Button({
   icon,
   label,
   variant = 'primary',
+  style,
   ...rest
 }: ButtonProps) {
   return (
     <TouchableOpacity
       {...rest}
       style={[
+        style,
         styles.container,
-        variant === 'secondary' && { backgroundColor: '#F0F0F0' },
+        variant === 'secondary' && { backgroundColor: '#FAFAFA' },
       ]}
     >
       {icon}

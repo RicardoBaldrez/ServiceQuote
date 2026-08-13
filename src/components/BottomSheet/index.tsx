@@ -69,20 +69,22 @@ export default function BottomSheet({
       <Animated.View style={[styles.overlay, { opacity: overlayOpacity }]}>
         <Pressable style={styles.overlayPressable} onPress={handleClose} />
       </Animated.View>
-      <Animated.View
-        style={[styles.container, { transform: [{ translateY }] }]}
-      >
-        <Header>
-          <View style={styles.header}>
-            <Text style={styles.title}>{title}</Text>
-            <TouchableOpacity onPress={handleClose}>
-              <MaterialIcons name="close" size={20} color="#4A4A4A" />
-            </TouchableOpacity>
-          </View>
-        </Header>
-        <View style={styles.content}>{children}</View>
-        {footer && <View style={styles.footer}>{footer(handleClose)}</View>}
-      </Animated.View>
+      <View style={styles.sheetWrapper} pointerEvents="box-none">
+        <Animated.View
+          style={[styles.container, { transform: [{ translateY }] }]}
+        >
+          <Header>
+            <View style={styles.header}>
+              <Text style={styles.title}>{title}</Text>
+              <TouchableOpacity onPress={handleClose}>
+                <MaterialIcons name="close" size={20} color="#4A4A4A" />
+              </TouchableOpacity>
+            </View>
+          </Header>
+          <View style={styles.content}>{children}</View>
+          {footer && <View style={styles.footer}>{footer(handleClose)}</View>}
+        </Animated.View>
+      </View>
     </>
   );
 }

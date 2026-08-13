@@ -12,12 +12,16 @@ export const styles = StyleSheet.create({
   overlayPressable: {
     flex: 1,
   },
-  container: {
+  sheetWrapper: {
     zIndex: 1000,
     position: 'absolute',
-    bottom: 0,
+    top: 0,
     left: 0,
     right: 0,
+    bottom: 0,
+    justifyContent: 'flex-end',
+  },
+  container: {
     borderRadius: 12,
     backgroundColor: '#FFFFFF',
   },

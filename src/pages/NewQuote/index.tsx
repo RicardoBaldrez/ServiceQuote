@@ -11,6 +11,7 @@ import Input from '@/components/Input';
 import Status from '@/components/Status';
 import { StatusType } from '@/components/Status/types';
 
+import BottomSheetServices from '@/pages/NewQuote/components/BottomSheetServices';
 import { itemsStorage } from '@/storage/itemsStorage';
 import { limitChars } from '@/utils';
 
@@ -18,6 +19,8 @@ import { styles } from './styles';
 
 export default function NewQuote() {
   const navigation = useNavigation();
+
+  const [showBottomSheetServices, setShowBottomSheetServices] = useState(false);
 
   const [title, setTitle] = useState<string>('');
   const [client, setClient] = useState<string>('');
@@ -68,147 +71,154 @@ export default function NewQuote() {
   };
 
   return (
-    <ScrollView>
-      <Header>
-        <Pressable
-          style={styles.backButton}
-          onPress={() => navigation.goBack()}
-        >
-          <MaterialIcons name="arrow-back-ios" size={20} color="#4A4A4A" />
-          <Text style={styles.backButtonText}>Orçamento</Text>
-        </Pressable>
-      </Header>
-      <View style={styles.container}>
-        <InfoCard title="Informações gerais" icon="storefront">
-          <View style={styles.sectionContent}>
-            <Input
-              placeholder="Título"
-              placeholderTextColor="#676767"
-              hasIcon={false}
-              value={title}
-              onChangeText={setTitle}
-            />
-            <Input
-              placeholder="Cliente"
-              placeholderTextColor="#676767"
-              hasIcon={false}
-              value={client}
-              onChangeText={setClient}
-            />
-          </View>
-        </InfoCard>
-        <InfoCard title="Status" icon="sell">
-          <View style={styles.statusList}>
-            {Object.values(StatusType).map((status) => (
-              <Pressable
-                key={status}
-                onPress={() => setStatusChose(status)}
-                style={styles.statusOption}
-              >
-                <MaterialIcons
-                  name={
-                    statusChose === status
-                      ? 'radio-button-checked'
-                      : 'radio-button-unchecked'
-                  }
-                  size={24}
-                  color={statusChose === status ? '#6A46EB' : '#676767'}
-                  style={[
-                    styles.statusRadioIcon,
-                    { color: statusChose === status ? '#6A46EB' : '#676767' },
-                  ]}
-                />
-                <Status key={status} status={status} />
-              </Pressable>
-            ))}
-          </View>
-        </InfoCard>
-        <InfoCard title="Serviços inclusos" icon="article">
-          {services.map((service) => {
-            return (
-              <>
-                <View style={styles.serviceRow}>
-                  <View style={styles.serviceContent}>
-                    <View style={styles.serviceRowTop}>
-                      <Text style={styles.serviceTitle}>{service.title}</Text>
-                      <Text style={styles.servicePrice}>
-                        <CompleteAmount amount={service.price} />
-                      </Text>
-                    </View>
-                    <View style={styles.serviceRowTop}>
-                      <Text style={styles.serviceDescription}>
-                        {limitChars(service.description)}
-                      </Text>
-                      <Text style={styles.serviceQuantity}>
-                        Qt: {service.quantity}
-                      </Text>
-                    </View>
-                  </View>
-                  <View style={styles.serviceEdit}>
-                    <MaterialIcons name="edit" size={24} color="#6A46EB" />
-                  </View>
-                </View>
-              </>
-            );
-          })}
-          <Button
-            icon={<MaterialIcons name="add" size={24} color="#6A46EB" />}
-            label="Adicionar serviço"
-            variant="secondary"
-            onPress={() => {}}
-            style={styles.addServiceButton}
-          />
-        </InfoCard>
-        <InfoCard title="Investimento" icon="credit-card">
-          <View style={styles.investmentRow}>
-            <Text>Subtotal </Text>
-            <View style={styles.investmentSubtotalMeta}>
-              <Text style={styles.investmentItemsCount}>
-                {services.length} itens
-              </Text>
-              <Text style={styles.investmentSubtotalValue}>R$ 100,00</Text>
+    <>
+      <ScrollView>
+        <Header>
+          <Pressable
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}
+          >
+            <MaterialIcons name="arrow-back-ios" size={20} color="#4A4A4A" />
+            <Text style={styles.backButtonText}>Orçamento</Text>
+          </Pressable>
+        </Header>
+        <View style={styles.container}>
+          <InfoCard title="Informações gerais" icon="storefront">
+            <View style={styles.sectionContent}>
+              <Input
+                placeholder="Título"
+                placeholderTextColor="#676767"
+                hasIcon={false}
+                value={title}
+                onChangeText={setTitle}
+              />
+              <Input
+                placeholder="Cliente"
+                placeholderTextColor="#676767"
+                hasIcon={false}
+                value={client}
+                onChangeText={setClient}
+              />
             </View>
-          </View>
-          <View style={styles.discountRow}>
-            <View style={styles.discountField}>
-              <Text>Desconto</Text>
-              <View style={styles.discountInputWrapper}>
-                <Input
-                  placeholder=""
-                  hasIcon
-                  value={discountPct}
-                  onChangeText={setDiscountPct}
-                  keyboardType="numeric"
-                  icon={
-                    <MaterialIcons
-                      name="percent"
-                      size={14}
-                      color="black"
-                      style={styles.percentIcon}
-                    />
-                  }
-                />
+          </InfoCard>
+          <InfoCard title="Status" icon="sell">
+            <View style={styles.statusList}>
+              {Object.values(StatusType).map((status) => (
+                <Pressable
+                  key={status}
+                  onPress={() => setStatusChose(status)}
+                  style={styles.statusOption}
+                >
+                  <MaterialIcons
+                    name={
+                      statusChose === status
+                        ? 'radio-button-checked'
+                        : 'radio-button-unchecked'
+                    }
+                    size={24}
+                    color={statusChose === status ? '#6A46EB' : '#676767'}
+                    style={[
+                      styles.statusRadioIcon,
+                      { color: statusChose === status ? '#6A46EB' : '#676767' },
+                    ]}
+                  />
+                  <Status key={status} status={status} />
+                </Pressable>
+              ))}
+            </View>
+          </InfoCard>
+          <InfoCard title="Serviços inclusos" icon="article">
+            {services.map((service) => {
+              return (
+                <>
+                  <View style={styles.serviceRow}>
+                    <View style={styles.serviceContent}>
+                      <View style={styles.serviceRowTop}>
+                        <Text style={styles.serviceTitle}>{service.title}</Text>
+                        <Text style={styles.servicePrice}>
+                          <CompleteAmount amount={service.price} />
+                        </Text>
+                      </View>
+                      <View style={styles.serviceRowTop}>
+                        <Text style={styles.serviceDescription}>
+                          {limitChars(service.description)}
+                        </Text>
+                        <Text style={styles.serviceQuantity}>
+                          Qt: {service.quantity}
+                        </Text>
+                      </View>
+                    </View>
+                    <View style={styles.serviceEdit}>
+                      <MaterialIcons name="edit" size={24} color="#6A46EB" />
+                    </View>
+                  </View>
+                </>
+              );
+            })}
+            <Button
+              icon={<MaterialIcons name="add" size={24} color="#6A46EB" />}
+              label="Adicionar serviço"
+              variant="secondary"
+              onPress={() => setShowBottomSheetServices(true)}
+              style={styles.addServiceButton}
+            />
+          </InfoCard>
+          <InfoCard title="Investimento" icon="credit-card">
+            <View style={styles.investmentRow}>
+              <Text>Subtotal </Text>
+              <View style={styles.investmentSubtotalMeta}>
+                <Text style={styles.investmentItemsCount}>
+                  {services.length} itens
+                </Text>
+                <Text style={styles.investmentSubtotalValue}>R$ 100,00</Text>
               </View>
             </View>
-            <Text style={styles.discountValue}>-R$ 100,00</Text>
-          </View>
-          <View style={styles.totalRow}>
-            <Text style={styles.totalLabel}>Valor total</Text>
-            <View>
-              <Text style={styles.totalStrikethrough}>R$ 100,00</Text>
-              <CompleteAmount amount={totalPrice} />
+            <View style={styles.discountRow}>
+              <View style={styles.discountField}>
+                <Text>Desconto</Text>
+                <View style={styles.discountInputWrapper}>
+                  <Input
+                    placeholder=""
+                    hasIcon
+                    value={discountPct}
+                    onChangeText={setDiscountPct}
+                    keyboardType="numeric"
+                    icon={
+                      <MaterialIcons
+                        name="percent"
+                        size={14}
+                        color="black"
+                        style={styles.percentIcon}
+                      />
+                    }
+                  />
+                </View>
+              </View>
+              <Text style={styles.discountValue}>-R$ 100,00</Text>
             </View>
-          </View>
-        </InfoCard>
-      </View>
-      <View style={styles.footer}>
-        <Button label="Cancelar" variant="secondary" />
-        <Button
-          icon={<MaterialIcons name="check" size={24} color="#FFFFFF" />}
-          label="Salvar"
-          onPress={handleSaveItems}
+            <View style={styles.totalRow}>
+              <Text style={styles.totalLabel}>Valor total</Text>
+              <View>
+                <Text style={styles.totalStrikethrough}>R$ 100,00</Text>
+                <CompleteAmount amount={totalPrice} />
+              </View>
+            </View>
+          </InfoCard>
+        </View>
+        <View style={styles.footer}>
+          <Button label="Cancelar" variant="secondary" />
+          <Button
+            icon={<MaterialIcons name="check" size={24} color="#FFFFFF" />}
+            label="Salvar"
+            onPress={handleSaveItems}
+          />
+        </View>
+      </ScrollView>
+      {showBottomSheetServices && (
+        <BottomSheetServices
+          onClose={() => setShowBottomSheetServices(false)}
         />
-      </View>
-    </ScrollView>
+      )}
+    </>
   );
 }

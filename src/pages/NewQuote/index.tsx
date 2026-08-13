@@ -1,7 +1,7 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
-import { View, Text, Pressable, ScrollView } from 'react-native';
+import { View, Text, Pressable, ScrollView, Alert } from 'react-native';
 
 import Button from '@/components/Button';
 import CompleteAmount from '@/components/CompleteAmount';
@@ -11,13 +11,38 @@ import Input from '@/components/Input';
 import Status from '@/components/Status';
 import { StatusType } from '@/components/Status/types';
 
+import { itemsStorage } from '@/storage/itemsStorage';
+
 import { styles } from './styles';
 
 export default function NewQuote() {
   const navigation = useNavigation();
 
+  const [title, setTitle] = useState<string>('');
+  const [client, setClient] = useState<string>('');
   const [statusChose, setStatusChose] = useState<StatusType>(StatusType.Draft);
   const [discount, setDiscount] = useState<string>('0');
+  const [amount, setAmount] = useState<number>(0);
+
+  const handleSaveItems = async () => {
+    const newItem = {
+      id: Math.random().toString(36).substring(2),
+      title,
+      client,
+      status: statusChose,
+      discountPct: discount,
+      items: [],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    try {
+      await itemsStorage.add(newItem);
+      navigation.navigate('Home' as never);
+    } catch (error) {
+      Alert.alert('Erro', error as string);
+    }
+  };
 
   return (
     <ScrollView>
@@ -37,11 +62,15 @@ export default function NewQuote() {
               placeholder="Título"
               placeholderTextColor="#676767"
               hasIcon={false}
+              value={title}
+              onChangeText={setTitle}
             />
             <Input
               placeholder="Cliente"
               placeholderTextColor="#676767"
               hasIcon={false}
+              value={client}
+              onChangeText={setClient}
             />
           </View>
         </InfoCard>
@@ -72,23 +101,6 @@ export default function NewQuote() {
           </View>
         </InfoCard>
         <InfoCard title="Serviços inclusos" icon="article">
-          <View style={styles.serviceRow}>
-            <View style={styles.serviceContent}>
-              <View style={styles.serviceRowTop}>
-                <Text style={styles.serviceTitle}>Design de interfaces</Text>
-                <Text style={styles.servicePrice}>R$ 100,00</Text>
-              </View>
-              <View style={styles.serviceRowTop}>
-                <Text style={styles.serviceDescription}>
-                  Desenvolvimento de aplicativos
-                </Text>
-                <Text style={styles.serviceQuantity}>Qt: 1</Text>
-              </View>
-            </View>
-            <View style={styles.serviceEdit}>
-              <MaterialIcons name="edit" size={24} color="#6A46EB" />
-            </View>
-          </View>
           <View style={styles.serviceRow}>
             <View style={styles.serviceContent}>
               <View style={styles.serviceRowTop}>
@@ -159,6 +171,7 @@ export default function NewQuote() {
         <Button
           icon={<MaterialIcons name="check" size={24} color="#FFFFFF" />}
           label="Salvar"
+          onPress={handleSaveItems}
         />
       </View>
     </ScrollView>

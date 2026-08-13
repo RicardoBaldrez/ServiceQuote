@@ -12,6 +12,7 @@ import Status from '@/components/Status';
 import { StatusType } from '@/components/Status/types';
 
 import { itemsStorage } from '@/storage/itemsStorage';
+import { limitChars } from '@/utils';
 
 import { styles } from './styles';
 
@@ -23,6 +24,22 @@ export default function NewQuote() {
   const [statusChose, setStatusChose] = useState<StatusType>(StatusType.Draft);
   const [discount, setDiscount] = useState<string>('0');
   const [amount, setAmount] = useState<number>(0);
+  const [services, setServices] = useState<any[]>([
+    {
+      id: Math.random().toString(36).substring(2),
+      title: 'Design de interfaces',
+      price: 2000,
+      quantity: 1,
+      description: 'Desenvolvimento de aplicativos',
+    },
+    {
+      id: Math.random().toString(36).substring(2),
+      title: 'Desenvolvimento de aplicativos',
+      price: 1800,
+      quantity: 1,
+      description: 'Desenvolvimento de um aplicativo de delivery',
+    },
+  ]);
 
   const handleSaveItems = async () => {
     const newItem = {
@@ -51,7 +68,7 @@ export default function NewQuote() {
           style={styles.backButton}
           onPress={() => navigation.goBack()}
         >
-          <MaterialIcons name="arrow-back-ios" size={24} color="#4A4A4A" />
+          <MaterialIcons name="arrow-back-ios" size={20} color="#4A4A4A" />
           <Text style={styles.backButtonText}>Orçamento</Text>
         </Pressable>
       </Header>
@@ -74,7 +91,7 @@ export default function NewQuote() {
             />
           </View>
         </InfoCard>
-        <InfoCard title="Status" icon="more">
+        <InfoCard title="Status" icon="sell">
           <View style={styles.statusList}>
             {Object.values(StatusType).map((status) => (
               <Pressable
@@ -101,23 +118,33 @@ export default function NewQuote() {
           </View>
         </InfoCard>
         <InfoCard title="Serviços inclusos" icon="article">
-          <View style={styles.serviceRow}>
-            <View style={styles.serviceContent}>
-              <View style={styles.serviceRowTop}>
-                <Text style={styles.serviceTitle}>Design de interfaces</Text>
-                <Text style={styles.servicePrice}>R$ 100,00</Text>
-              </View>
-              <View style={styles.serviceRowTop}>
-                <Text style={styles.serviceDescription}>
-                  Desenvolvimento de aplicativos
-                </Text>
-                <Text style={styles.serviceQuantity}>Qt: 1</Text>
-              </View>
-            </View>
-            <View style={styles.serviceEdit}>
-              <MaterialIcons name="edit" size={24} color="#6A46EB" />
-            </View>
-          </View>
+          {services.map((service) => {
+            return (
+              <>
+                <View style={styles.serviceRow}>
+                  <View style={styles.serviceContent}>
+                    <View style={styles.serviceRowTop}>
+                      <Text style={styles.serviceTitle}>{service.title}</Text>
+                      <Text style={styles.servicePrice}>
+                        <CompleteAmount amount={service.price} />
+                      </Text>
+                    </View>
+                    <View style={styles.serviceRowTop}>
+                      <Text style={styles.serviceDescription}>
+                        {limitChars(service.description)}
+                      </Text>
+                      <Text style={styles.serviceQuantity}>
+                        Qt: {service.quantity}
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={styles.serviceEdit}>
+                    <MaterialIcons name="edit" size={24} color="#6A46EB" />
+                  </View>
+                </View>
+              </>
+            );
+          })}
           <Button
             icon={<MaterialIcons name="add" size={24} color="#6A46EB" />}
             label="Adicionar serviço"
@@ -130,7 +157,9 @@ export default function NewQuote() {
           <View style={styles.investmentRow}>
             <Text>Subtotal </Text>
             <View style={styles.investmentSubtotalMeta}>
-              <Text style={styles.investmentItemsCount}>8 itens</Text>
+              <Text style={styles.investmentItemsCount}>
+                {services.length} itens
+              </Text>
               <Text style={styles.investmentSubtotalValue}>R$ 100,00</Text>
             </View>
           </View>
@@ -161,7 +190,12 @@ export default function NewQuote() {
             <Text style={styles.totalLabel}>Valor total</Text>
             <View>
               <Text style={styles.totalStrikethrough}>R$ 100,00</Text>
-              <CompleteAmount amount={100} />
+              <CompleteAmount
+                amount={services.reduce(
+                  (total, service) => total + service.price,
+                  0,
+                )}
+              />
             </View>
           </View>
         </InfoCard>

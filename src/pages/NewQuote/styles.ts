@@ -50,13 +50,13 @@ export const styles = StyleSheet.create({
   serviceRowTop: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
   },
   serviceTitle: {
     color: '#0F0F0F',
     fontSize: 14,
     fontWeight: 'bold',
     marginBottom: 4,
+    width: '70%',
   },
   servicePrice: {
     color: '#0F0F0F',

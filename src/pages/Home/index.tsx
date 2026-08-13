@@ -5,12 +5,11 @@ import FilterButton from '@/components/FilterButton';
 import Header from '@/components/Header';
 import QuoteCard from '@/components/QuoteCard';
 
-import { formatCurrency } from '@/utils/formatCurrency';
-
 import BottomSheetFilter from '@/pages/Home/components/BottomSheetFilter';
 import HomeFilter from '@/pages/Home/components/HomeFilter';
 import HomeHeader from '@/pages/Home/components/HomeHeader';
 import { itemsStorage } from '@/storage/itemsStorage';
+import { formatCurrency } from '@/utils';
 
 export default function HomePage() {
   const [quotes, setQuotes] = useState<any[]>([]);

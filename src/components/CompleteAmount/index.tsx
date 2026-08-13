@@ -1,7 +1,8 @@
 import { View, Text } from 'react-native';
 
+import { formatCurrency } from '@/utils';
+
 import { styles } from './styles';
-import { formatCurrency } from '../../utils/formatCurrency';
 
 export default function CompleteAmount({ amount }: { amount: number }) {
   return (

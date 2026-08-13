@@ -9,7 +9,6 @@ import BottomSheetFilter from '@/pages/Home/components/BottomSheetFilter';
 import HomeFilter from '@/pages/Home/components/HomeFilter';
 import HomeHeader from '@/pages/Home/components/HomeHeader';
 import { itemsStorage } from '@/storage/itemsStorage';
-import { formatCurrency } from '@/utils';
 
 export default function HomePage() {
   const [quotes, setQuotes] = useState<any[]>([]);
@@ -50,7 +49,7 @@ export default function HomePage() {
               key={item.id}
               title={item.client}
               description={item.title}
-              price={formatCurrency(item.price)}
+              price={item.price}
               status={item.status}
             />
           )}

@@ -3,13 +3,15 @@ import { View, Text } from 'react-native';
 import Status from '@/components/Status';
 import { StatusType } from '@/components/Status/types';
 
+import { formatCurrency } from '@/utils';
+
 import { styles } from './styles';
 import InfoCard from '../InfoCard';
 
 type QuoteCardProps = {
   title: string;
   description: string;
-  price: string;
+  price: number;
   status: StatusType;
 };
 
@@ -30,7 +32,7 @@ export default function QuoteCard({
           <Text style={styles.description}>{description}</Text>
           <View style={styles.descriptionPriceContainer}>
             <Text style={styles.description}>R$</Text>
-            <Text style={styles.descriptionPrice}>{price}</Text>
+            <Text style={styles.descriptionPrice}>{formatCurrency(price)}</Text>
           </View>
         </View>
       </View>

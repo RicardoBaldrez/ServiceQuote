@@ -22,33 +22,39 @@ export default function NewQuote() {
   const [title, setTitle] = useState<string>('');
   const [client, setClient] = useState<string>('');
   const [statusChose, setStatusChose] = useState<StatusType>(StatusType.Draft);
-  const [discount, setDiscount] = useState<string>('0');
+  const [discountPct, setDiscountPct] = useState<string>('0');
   const [amount, setAmount] = useState<number>(0);
   const [services, setServices] = useState<any[]>([
     {
       id: Math.random().toString(36).substring(2),
       title: 'Design de interfaces',
-      price: 2000,
+      price: 1750,
       quantity: 1,
       description: 'Desenvolvimento de aplicativos',
     },
     {
       id: Math.random().toString(36).substring(2),
       title: 'Desenvolvimento de aplicativos',
-      price: 1800,
+      price: 2700,
       quantity: 1,
       description: 'Desenvolvimento de um aplicativo de delivery',
     },
   ]);
+
+  const totalPrice = services.reduce(
+    (total, service) => total + service.price,
+    0,
+  );
 
   const handleSaveItems = async () => {
     const newItem = {
       id: Math.random().toString(36).substring(2),
       title,
       client,
+      price: totalPrice,
       status: statusChose,
-      discountPct: discount,
-      items: [],
+      discountPct,
+      items: services,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
@@ -170,8 +176,8 @@ export default function NewQuote() {
                 <Input
                   placeholder=""
                   hasIcon
-                  value={discount}
-                  onChangeText={setDiscount}
+                  value={discountPct}
+                  onChangeText={setDiscountPct}
                   keyboardType="numeric"
                   icon={
                     <MaterialIcons
@@ -190,12 +196,7 @@ export default function NewQuote() {
             <Text style={styles.totalLabel}>Valor total</Text>
             <View>
               <Text style={styles.totalStrikethrough}>R$ 100,00</Text>
-              <CompleteAmount
-                amount={services.reduce(
-                  (total, service) => total + service.price,
-                  0,
-                )}
-              />
+              <CompleteAmount amount={totalPrice} />
             </View>
           </View>
         </InfoCard>

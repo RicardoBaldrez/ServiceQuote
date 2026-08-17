@@ -1,5 +1,5 @@
 import { MaterialIcons } from '@expo/vector-icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 
 import BottomSheet from '@/components/BottomSheet';
@@ -10,25 +10,42 @@ import { styles } from './styles';
 
 interface BottomSheetServicesProps {
   onClose: () => void;
-  onSave: (service: any) => void;
+  onCreate: (service: any) => void;
+  onEdit: (service: any) => void;
+  service?: any;
 }
 
 export default function BottomSheetServices({
   onClose,
-  onSave,
+  onCreate,
+  onEdit,
+  service,
 }: BottomSheetServicesProps) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
   const [quantity, setQuantity] = useState('1');
 
+  useEffect(() => {
+    setTitle(service?.title ?? '');
+    setDescription(service?.description ?? '');
+    setPrice(service?.price != null ? String(service.price) : '');
+    setQuantity(service?.quantity != null ? String(service.quantity) : '1');
+  }, [service]);
+
   const handleSave = () => {
-    onSave({ title, description, price, quantity });
+    if (service) {
+      onEdit({ id: service.id, title, description, price, quantity });
+    } else {
+      onCreate({
+        id: Math.random().toString(36).substring(2),
+        title,
+        description,
+        price,
+        quantity,
+      });
+    }
     onClose();
-    setTitle('');
-    setDescription('');
-    setPrice('');
-    setQuantity('1');
   };
 
   return (

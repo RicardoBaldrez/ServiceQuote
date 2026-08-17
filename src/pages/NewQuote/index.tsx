@@ -27,6 +27,7 @@ export default function NewQuote() {
   const [statusChose, setStatusChose] = useState<StatusType>(StatusType.Draft);
   const [discountPct, setDiscountPct] = useState<string>('0');
   const [services, setServices] = useState<any[]>([]);
+  const [serviceChosed, setServiceChosed] = useState<any>(null);
 
   const totalPrice = services?.reduce(
     (total, service) => total + Number(service.price * service.quantity),
@@ -43,7 +44,7 @@ export default function NewQuote() {
       id: Math.random().toString(36).substring(2),
       title,
       client,
-      price: totalPrice,
+      price: totalPriceWithDiscount,
       status: statusChose,
       discountPct,
       items: services,
@@ -64,8 +65,12 @@ export default function NewQuote() {
     }
   };
 
-  const handleSaveService = (service: any) => {
-    setServices((prevServices) => [...prevServices, service]);
+  const handleCreateService = (service: any) => {
+    setServices((prev) => [...prev, service]);
+  };
+
+  const handleEditService = (service: any) => {
+    setServices((prev) => prev.map((s) => (s.id === service.id ? service : s)));
   };
 
   return (
@@ -129,7 +134,7 @@ export default function NewQuote() {
             {services.map((service) => {
               return (
                 <>
-                  <View style={styles.serviceRow}>
+                  <View style={styles.serviceRow} key={service.id}>
                     <View style={styles.serviceContent}>
                       <View style={styles.serviceRowTop}>
                         <Text style={styles.serviceTitle}>{service.title}</Text>
@@ -146,9 +151,15 @@ export default function NewQuote() {
                         </Text>
                       </View>
                     </View>
-                    <View style={styles.serviceEdit}>
+                    <Pressable
+                      style={styles.serviceEdit}
+                      onPress={() => {
+                        setShowBottomSheetServices(true);
+                        setServiceChosed(service);
+                      }}
+                    >
                       <MaterialIcons name="edit" size={24} color="#6A46EB" />
-                    </View>
+                    </Pressable>
                   </View>
                 </>
               );
@@ -228,8 +239,13 @@ export default function NewQuote() {
       </ScrollView>
       {showBottomSheetServices && (
         <BottomSheetServices
-          onClose={() => setShowBottomSheetServices(false)}
-          onSave={handleSaveService}
+          onClose={() => {
+            setShowBottomSheetServices(false);
+            setServiceChosed(null);
+          }}
+          onCreate={handleCreateService}
+          onEdit={handleEditService}
+          service={serviceChosed}
         />
       )}
     </>

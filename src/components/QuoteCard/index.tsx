@@ -23,7 +23,7 @@ export default function QuoteCard({
 }: QuoteCardProps) {
   return (
     <InfoCard>
-      <View style={{ padding: 16 }}>
+      <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.title}>{title}</Text>
           <Status status={status} />

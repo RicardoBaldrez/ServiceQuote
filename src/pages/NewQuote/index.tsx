@@ -51,6 +51,11 @@ export default function NewQuote() {
       updatedAt: new Date().toISOString(),
     };
 
+    if (title === '' || client === '') {
+      Alert.alert('Erro', 'Título e cliente são campos obrigatórios');
+      return;
+    }
+
     try {
       await itemsStorage.add(newItem);
       navigation.navigate('Home' as never);

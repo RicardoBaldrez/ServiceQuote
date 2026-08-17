@@ -13,7 +13,7 @@ import { StatusType } from '@/components/Status/types';
 
 import BottomSheetServices from '@/pages/NewQuote/components/BottomSheetServices';
 import { itemsStorage } from '@/storage/itemsStorage';
-import { limitChars } from '@/utils';
+import { formatCurrency, limitChars } from '@/utils';
 
 import { styles } from './styles';
 
@@ -26,28 +26,17 @@ export default function NewQuote() {
   const [client, setClient] = useState<string>('');
   const [statusChose, setStatusChose] = useState<StatusType>(StatusType.Draft);
   const [discountPct, setDiscountPct] = useState<string>('0');
-  const [amount, setAmount] = useState<number>(0);
-  const [services, setServices] = useState<any[]>([
-    {
-      id: Math.random().toString(36).substring(2),
-      title: 'Design de interfaces',
-      price: 1750,
-      quantity: 1,
-      description: 'Desenvolvimento de aplicativos',
-    },
-    {
-      id: Math.random().toString(36).substring(2),
-      title: 'Desenvolvimento de aplicativos',
-      price: 2700,
-      quantity: 1,
-      description: 'Desenvolvimento de um aplicativo de delivery',
-    },
-  ]);
+  const [services, setServices] = useState<any[]>([]);
 
-  const totalPrice = services.reduce(
-    (total, service) => total + service.price,
+  const totalPrice = services?.reduce(
+    (total, service) => total + Number(service.price * service.quantity),
     0,
   );
+
+  const discountValue = totalPrice * (Number(discountPct) / 100);
+  const totalPriceWithDiscount = totalPrice - discountValue;
+
+  const totalDiscount = totalPrice - totalPriceWithDiscount;
 
   const handleSaveItems = async () => {
     const newItem = {
@@ -68,6 +57,10 @@ export default function NewQuote() {
     } catch (error) {
       Alert.alert('Erro', error as string);
     }
+  };
+
+  const handleSaveService = (service: any) => {
+    setServices((prevServices) => [...prevServices, service]);
   };
 
   return (
@@ -170,7 +163,9 @@ export default function NewQuote() {
                 <Text style={styles.investmentItemsCount}>
                   {services.length} itens
                 </Text>
-                <Text style={styles.investmentSubtotalValue}>R$ 100,00</Text>
+                <Text style={styles.investmentSubtotalValue}>
+                  R$ {formatCurrency(totalPrice)}
+                </Text>
               </View>
             </View>
             <View style={styles.discountRow}>
@@ -194,19 +189,31 @@ export default function NewQuote() {
                   />
                 </View>
               </View>
-              <Text style={styles.discountValue}>-R$ 100,00</Text>
+              {totalDiscount > 0 && (
+                <Text style={styles.discountValue}>
+                  -R$ {formatCurrency(totalDiscount)}
+                </Text>
+              )}
             </View>
             <View style={styles.totalRow}>
               <Text style={styles.totalLabel}>Valor total</Text>
               <View>
-                <Text style={styles.totalStrikethrough}>R$ 100,00</Text>
-                <CompleteAmount amount={totalPrice} />
+                {totalDiscount > 0 && (
+                  <Text style={styles.totalStrikethrough}>
+                    R$ {formatCurrency(totalPrice)}
+                  </Text>
+                )}
+                <CompleteAmount amount={totalPriceWithDiscount} />
               </View>
             </View>
           </InfoCard>
         </View>
         <View style={styles.footer}>
-          <Button label="Cancelar" variant="secondary" />
+          <Button
+            label="Cancelar"
+            variant="secondary"
+            onPress={() => navigation.goBack()}
+          />
           <Button
             icon={<MaterialIcons name="check" size={24} color="#FFFFFF" />}
             label="Salvar"
@@ -217,6 +224,7 @@ export default function NewQuote() {
       {showBottomSheetServices && (
         <BottomSheetServices
           onClose={() => setShowBottomSheetServices(false)}
+          onSave={handleSaveService}
         />
       )}
     </>

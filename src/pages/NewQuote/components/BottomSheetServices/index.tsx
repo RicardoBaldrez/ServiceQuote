@@ -10,25 +10,36 @@ import { styles } from './styles';
 
 interface BottomSheetServicesProps {
   onClose: () => void;
+  onSave: (service: any) => void;
 }
 
 export default function BottomSheetServices({
   onClose,
+  onSave,
 }: BottomSheetServicesProps) {
-  const [name, setName] = useState('');
+  const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [price, setPrice] = useState('R$0,00');
+  const [price, setPrice] = useState('');
   const [quantity, setQuantity] = useState('1');
+
+  const handleSave = () => {
+    onSave({ title, description, price, quantity });
+    onClose();
+    setTitle('');
+    setDescription('');
+    setPrice('');
+    setQuantity('1');
+  };
 
   return (
     <BottomSheet
       title="Serviço"
       onClose={onClose}
-      footer={(close) => (
+      footer={() => (
         <Button
           label="Salvar"
           icon={<MaterialIcons name="check" size={24} color="#FFFFFF" />}
-          onPress={close}
+          onPress={handleSave}
         />
       )}
     >
@@ -36,8 +47,8 @@ export default function BottomSheetServices({
         <Input
           placeholder="Nome"
           hasIcon={false}
-          value={name}
-          onChangeText={setName}
+          value={title}
+          onChangeText={setTitle}
         />
         <Input
           placeholder="Descrição"

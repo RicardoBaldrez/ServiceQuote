@@ -10,8 +10,8 @@ import { styles } from './styles';
 
 type ButtonProps = TouchableOpacityProps & {
   icon?: React.ReactNode;
-  label: string;
-  variant?: 'primary' | 'secondary';
+  label?: string;
+  variant?: 'primary' | 'secondary' | 'rounded';
   style?: StyleProp<ViewStyle>;
 };
 
@@ -29,14 +29,20 @@ export default function Button({
         style,
         styles.container,
         variant === 'secondary' && { backgroundColor: '#FAFAFA' },
+        variant === 'rounded' && styles.roundedLabel,
       ]}
     >
       {icon}
-      <Text
-        style={[styles.label, variant === 'secondary' && { color: '#6A46Eb' }]}
-      >
-        {label}
-      </Text>
+      {label && variant !== 'rounded' && (
+        <Text
+          style={[
+            styles.label,
+            variant === 'secondary' && { color: '#6A46Eb' },
+          ]}
+        >
+          {label}
+        </Text>
+      )}
     </TouchableOpacity>
   );
 }

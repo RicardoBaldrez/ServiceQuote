@@ -17,4 +17,11 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
     paddingHorizontal: 8,
   },
+  roundedLabel: {
+    borderRadius: 9999,
+    backgroundColor: '#FAFAFA',
+    borderWidth: 1,
+    borderColor: '#E6E5E5',
+    marginRight: 8,
+  },
 });

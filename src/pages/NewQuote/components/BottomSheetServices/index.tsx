@@ -12,6 +12,7 @@ interface BottomSheetServicesProps {
   onClose: () => void;
   onCreate: (service: any) => void;
   onEdit: (service: any) => void;
+  onDelete: (service: any) => void;
   service?: any;
 }
 
@@ -19,18 +20,21 @@ export default function BottomSheetServices({
   onClose,
   onCreate,
   onEdit,
+  onDelete,
   service,
 }: BottomSheetServicesProps) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
   const [quantity, setQuantity] = useState('1');
+  const [showDeleteButton, setShowDeleteButton] = useState(false);
 
   useEffect(() => {
     setTitle(service?.title ?? '');
     setDescription(service?.description ?? '');
     setPrice(service?.price != null ? String(service.price) : '');
     setQuantity(service?.quantity != null ? String(service.quantity) : '1');
+    setShowDeleteButton(service?.id !== undefined);
   }, [service]);
 
   const handleSave = () => {
@@ -48,16 +52,30 @@ export default function BottomSheetServices({
     onClose();
   };
 
+  const handleDelete = () => {
+    onDelete(service);
+    onClose();
+  };
+
   return (
     <BottomSheet
       title="Serviço"
       onClose={onClose}
       footer={() => (
-        <Button
-          label="Salvar"
-          icon={<MaterialIcons name="check" size={24} color="#FFFFFF" />}
-          onPress={handleSave}
-        />
+        <View style={{ flexDirection: 'row' }}>
+          {showDeleteButton && (
+            <Button
+              variant="rounded"
+              onPress={handleDelete}
+              icon={<MaterialIcons name="delete" size={24} color="red" />}
+            />
+          )}
+          <Button
+            label="Salvar"
+            icon={<MaterialIcons name="check" size={24} color="#FFFFFF" />}
+            onPress={handleSave}
+          />
+        </View>
       )}
     >
       <View style={styles.container}>

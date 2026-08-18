@@ -8,16 +8,17 @@ import CompleteAmount from '@/components/CompleteAmount';
 import Header from '@/components/Header';
 import InfoCard from '@/components/InfoCard';
 import Input from '@/components/Input';
+import ServiceInformation from '@/components/ServiceInformation';
 import Status from '@/components/Status';
 import { StatusType } from '@/components/Status/types';
 
 import BottomSheetServices from '@/pages/NewQuote/components/BottomSheetServices';
 import { itemsStorage } from '@/storage/itemsStorage';
-import { formatCurrency, limitChars } from '@/utils';
+import { formatCurrency } from '@/utils';
 
 import { styles } from './styles';
 
-export default function NewQuote() {
+export default function NewQuotePage() {
   const navigation = useNavigation();
 
   const [showBottomSheetServices, setShowBottomSheetServices] = useState(false);
@@ -71,6 +72,9 @@ export default function NewQuote() {
 
   const handleEditService = (service: any) => {
     setServices((prev) => prev.map((s) => (s.id === service.id ? service : s)));
+  };
+  const handleDeleteService = (service: any) => {
+    setServices((prev) => prev.filter((s) => s.id !== service.id));
   };
 
   return (
@@ -131,39 +135,16 @@ export default function NewQuote() {
             </View>
           </InfoCard>
           <InfoCard title="Serviços inclusos" icon="article">
-            {services.map((service) => {
-              return (
-                <>
-                  <View style={styles.serviceRow} key={service.id}>
-                    <View style={styles.serviceContent}>
-                      <View style={styles.serviceRowTop}>
-                        <Text style={styles.serviceTitle}>{service.title}</Text>
-                        <Text style={styles.servicePrice}>
-                          <CompleteAmount amount={service.price} />
-                        </Text>
-                      </View>
-                      <View style={styles.serviceRowTop}>
-                        <Text style={styles.serviceDescription}>
-                          {limitChars(service.description)}
-                        </Text>
-                        <Text style={styles.serviceQuantity}>
-                          Qt: {service.quantity}
-                        </Text>
-                      </View>
-                    </View>
-                    <Pressable
-                      style={styles.serviceEdit}
-                      onPress={() => {
-                        setShowBottomSheetServices(true);
-                        setServiceChosed(service);
-                      }}
-                    >
-                      <MaterialIcons name="edit" size={24} color="#6A46EB" />
-                    </Pressable>
-                  </View>
-                </>
-              );
-            })}
+            {services.map((service) => (
+              <ServiceInformation
+                key={service.id}
+                service={service}
+                onEdit={(service) => {
+                  setShowBottomSheetServices(true);
+                  setServiceChosed(service);
+                }}
+              />
+            ))}
             <Button
               icon={<MaterialIcons name="add" size={24} color="#6A46EB" />}
               label="Adicionar serviço"
@@ -245,6 +226,7 @@ export default function NewQuote() {
           }}
           onCreate={handleCreateService}
           onEdit={handleEditService}
+          onDelete={handleDeleteService}
           service={serviceChosed}
         />
       )}

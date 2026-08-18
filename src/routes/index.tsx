@@ -2,9 +2,16 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import HomePage from '@/pages/Home';
-import NewQuote from '@/pages/NewQuote';
+import NewQuotePage from '@/pages/NewQuote';
+import NewQuoteDetailsPage from '@/pages/NewQuoteDetails';
 
-const Stack = createStackNavigator();
+export type RootStackParamList = {
+  Home: undefined;
+  NewQuote: undefined;
+  QuoteDetails: { id: string };
+};
+
+const Stack = createStackNavigator<RootStackParamList>();
 
 export function Routes() {
   return (
@@ -16,7 +23,8 @@ export function Routes() {
         }}
       >
         <Stack.Screen name="Home" component={HomePage} />
-        <Stack.Screen name="NewQuote" component={NewQuote} />
+        <Stack.Screen name="NewQuote" component={NewQuotePage} />
+        <Stack.Screen name="QuoteDetails" component={NewQuoteDetailsPage} />
       </Stack.Navigator>
     </NavigationContainer>
   );

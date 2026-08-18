@@ -46,6 +46,7 @@ export default function HomePage() {
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <QuoteCard
+              id={item.id}
               key={item.id}
               title={item.client}
               description={item.title}

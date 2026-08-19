@@ -14,6 +14,7 @@ export const styles = StyleSheet.create({
   },
   containerDetails: {
     padding: 20,
+    gap: 20,
   },
   loadingContainer: {
     flex: 1,
@@ -36,8 +37,11 @@ export const styles = StyleSheet.create({
   },
   quoteInfoIcon: {
     backgroundColor: '#DFDAF2',
-    padding: 8,
     borderRadius: 8,
+    height: 40,
+    width: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   quoteInfoTitle: {
     fontSize: 18,

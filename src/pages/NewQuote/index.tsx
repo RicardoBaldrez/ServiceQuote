@@ -14,7 +14,7 @@ import { StatusType } from '@/components/Status/types';
 
 import BottomSheetServices from '@/pages/NewQuote/components/BottomSheetServices';
 import { itemsStorage } from '@/storage/itemsStorage';
-import { formatCurrency } from '@/utils';
+import { calculateQuoteTotals, formatCurrency } from '@/utils';
 
 import { styles } from './styles';
 
@@ -30,15 +30,8 @@ export default function NewQuotePage() {
   const [services, setServices] = useState<any[]>([]);
   const [serviceChosed, setServiceChosed] = useState<any>(null);
 
-  const totalPrice = services?.reduce(
-    (total, service) => total + Number(service.price * service.quantity),
-    0,
-  );
-
-  const discountValue = totalPrice * (Number(discountPct) / 100);
-  const totalPriceWithDiscount = totalPrice - discountValue;
-
-  const totalDiscount = totalPrice - totalPriceWithDiscount;
+  const { totalPrice, totalPriceWithDiscount, totalDiscount } =
+    calculateQuoteTotals(services, discountPct);
 
   const handleSaveItems = async () => {
     const newItem = {

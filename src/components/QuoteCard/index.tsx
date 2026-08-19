@@ -1,13 +1,14 @@
-import { useNavigation } from '@react-navigation/native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { View, Text, TouchableOpacity } from 'react-native';
 
+import InfoCard from '@/components/InfoCard';
 import Status from '@/components/Status';
 import { StatusType } from '@/components/Status/types';
 
-import { formatCurrency } from '@/utils';
+import { RootStackParamList } from '@/routes';
+import { limitChars, formatCurrency } from '@/utils';
 
 import { styles } from './styles';
-import InfoCard from '../InfoCard';
 
 type QuoteCardProps = {
   id: string;
@@ -24,13 +25,11 @@ export default function QuoteCard({
   price,
   status,
 }: QuoteCardProps) {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   return (
     <TouchableOpacity
-      onPress={() =>
-        navigation.navigate('QuoteDetails' as never, { id: id } as never)
-      }
+      onPress={() => navigation.navigate('QuoteDetails', { id: id })}
     >
       <InfoCard>
         <View style={styles.container}>
@@ -39,7 +38,7 @@ export default function QuoteCard({
             <Status status={status} />
           </View>
           <View style={styles.descriptionContainer}>
-            <Text style={styles.description}>{description}</Text>
+            <Text style={styles.description}>{limitChars(description)}</Text>
             <View style={styles.descriptionPriceContainer}>
               <Text style={styles.description}>R$</Text>
               <Text style={styles.descriptionPrice}>

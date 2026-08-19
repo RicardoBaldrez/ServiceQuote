@@ -1,6 +1,6 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { View, Text, Pressable, Alert } from 'react-native';
 
 import Header from '@/components/Header';
@@ -17,12 +17,11 @@ export default function NewQuoteDetailsPage() {
   const navigation = useNavigation();
 
   const [quote, setQuote] = useState<any | null>(null);
-  console.log(JSON.stringify(quote, null, 2));
 
   const { id } =
     useRoute<RouteProp<RootStackParamList, 'QuoteDetails'>>().params;
 
-  const getQuote = async () => {
+  const getQuote = useCallback(async () => {
     try {
       const item = await itemsStorage.getById(id);
       setQuote(item);
@@ -30,13 +29,11 @@ export default function NewQuoteDetailsPage() {
       console.error(error);
       Alert.alert('Erro', 'Erro ao buscar orçamento');
     }
-  };
+  }, [id]);
 
   useEffect(() => {
-    setTimeout(() => {
-      getQuote();
-    }, 3000);
-  }, [id]);
+    getQuote();
+  }, [id, getQuote]);
 
   if (!quote) {
     return (

@@ -14,7 +14,5 @@ export const styles = StyleSheet.create({
   },
   containerDetails: {
     padding: 20,
-    borderWidth: 1,
-    borderColor: 'red',
   },
 });

@@ -3,7 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import HomePage from '@/pages/Home';
 import NewQuotePage from '@/pages/NewQuote';
-import NewQuoteDetailsPage from '@/pages/NewQuoteDetails';
+import QuoteDetailsPage from '@/pages/QuoteDetails';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -24,7 +24,7 @@ export function Routes() {
       >
         <Stack.Screen name="Home" component={HomePage} />
         <Stack.Screen name="NewQuote" component={NewQuotePage} />
-        <Stack.Screen name="QuoteDetails" component={NewQuoteDetailsPage} />
+        <Stack.Screen name="QuoteDetails" component={QuoteDetailsPage} />
       </Stack.Navigator>
     </NavigationContainer>
   );

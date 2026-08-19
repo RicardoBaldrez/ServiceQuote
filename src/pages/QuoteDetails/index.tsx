@@ -10,10 +10,11 @@ import Status from '@/components/Status';
 
 import { RootStackParamList } from '@/routes';
 import { itemsStorage } from '@/storage/itemsStorage';
+import { formatDate } from '@/utils';
 
 import { styles } from './styles';
 
-export default function NewQuoteDetailsPage() {
+export default function QuoteDetailsPage() {
   const navigation = useNavigation();
 
   const [quote, setQuote] = useState<any | null>(null);
@@ -37,7 +38,7 @@ export default function NewQuoteDetailsPage() {
 
   if (!quote) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <View style={styles.loadingContainer}>
         <Text>Carregando...</Text>
       </View>
     );
@@ -58,6 +59,32 @@ export default function NewQuoteDetailsPage() {
         </Pressable>
       </Header>
       <View style={styles.containerDetails}>
+        <View style={styles.quoteInfoCard}>
+          <View style={styles.quoteInfoHeader}>
+            <View style={styles.quoteInfoIcon}>
+              <MaterialIcons name="storefront" size={20} color="#6A46EB" />
+            </View>
+            <Text style={styles.quoteInfoTitle}>{quote?.title}</Text>
+          </View>
+          <View style={styles.quoteInfoClient}>
+            <Text style={styles.quoteTitleInfo}>Cliente</Text>
+            <Text style={styles.quoteValueInfo}>{quote?.client}</Text>
+          </View>
+          <View style={styles.quoteInfoDatesRow}>
+            <View style={styles.quoteInfoDateItem}>
+              <Text style={styles.quoteTitleInfo}>Criado em</Text>
+              <Text style={styles.quoteValueInfo}>
+                {formatDate(quote?.createdAt)}
+              </Text>
+            </View>
+            <View style={styles.quoteInfoDateItem}>
+              <Text style={styles.quoteTitleInfo}>Atualizado em</Text>
+              <Text style={styles.quoteValueInfo}>
+                {formatDate(quote?.updatedAt)}
+              </Text>
+            </View>
+          </View>
+        </View>
         <InfoCard title="Serviços inclusos" icon="article">
           {quote?.items?.map((service: any) => (
             <ServiceInformation key={service.id} service={service} />

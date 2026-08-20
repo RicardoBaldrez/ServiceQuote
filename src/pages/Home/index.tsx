@@ -40,10 +40,15 @@ export default function HomePage() {
         </View>
         <FilterButton onPress={() => setShowBottomSheetFilter(true)} />
       </View>
-      <View style={{ marginHorizontal: 20 }}>
+      <View
+        style={{
+          marginHorizontal: 20,
+        }}
+      >
         <FlatList
           data={quotes}
           keyExtractor={(item) => item.id.toString()}
+          contentContainerStyle={{ gap: 20 }}
           renderItem={({ item }) => (
             <QuoteCard
               id={item.id}

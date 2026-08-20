@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
   container: {
     margin: 20,
+    gap: 20,
   },
   backButton: {
     flexDirection: 'row',

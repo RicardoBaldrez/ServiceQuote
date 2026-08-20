@@ -62,12 +62,12 @@ export default function BottomSheetServices({
       title="Serviço"
       onClose={onClose}
       footer={() => (
-        <View style={{ flexDirection: 'row' }}>
+        <View style={styles.footerButtons}>
           {showDeleteButton && (
             <Button
               variant="rounded"
               onPress={handleDelete}
-              icon={<MaterialIcons name="delete" size={24} color="red" />}
+              icon={<MaterialIcons name="delete" size={24} color="#DB4D4D" />}
             />
           )}
           <Button
@@ -93,13 +93,10 @@ export default function BottomSheetServices({
           multiline
           numberOfLines={4}
           textAlignVertical="top"
-          style={{
-            minHeight: 100,
-            borderRadius: 16,
-          }}
+          style={styles.descriptionInput}
         />
         <View style={styles.priceQuantityContainer}>
-          <View style={{ width: '67%' }}>
+          <View style={styles.priceInputWrapper}>
             <Input
               placeholder="Preço"
               hasIcon={false}
@@ -107,7 +104,7 @@ export default function BottomSheetServices({
               onChangeText={setPrice}
             />
           </View>
-          <View style={{ width: '30%' }}>
+          <View style={styles.quantityInputWrapper}>
             <Input
               placeholder="Quantidade"
               hasIcon={false}

@@ -10,4 +10,17 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 10,
   },
+  footerButtons: {
+    flexDirection: 'row',
+  },
+  descriptionInput: {
+    minHeight: 100,
+    borderRadius: 16,
+  },
+  priceInputWrapper: {
+    width: '67%',
+  },
+  quantityInputWrapper: {
+    width: '30%',
+  },
 });

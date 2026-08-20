@@ -97,102 +97,40 @@ export default function QuoteDetailsPage() {
           ))}
         </InfoCard>
         <InfoCard>
-          <View
-            style={{
-              backgroundColor: '#FAFAFA',
-              alignItems: 'flex-start',
-              padding: 20,
-            }}
-          >
-            <View
-              style={{
-                flexDirection: 'row',
-                width: '100%',
-                justifyContent: 'space-between',
-                gap: 16,
-              }}
-            >
+          <View style={styles.totalsContainer}>
+            <View style={styles.totalsRow}>
               <View style={styles.quoteInfoIcon}>
                 <MaterialIcons name="attach-money" size={20} color="#6A46EB" />
               </View>
-              <View style={{ flex: 1 }}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <Text style={{ fontSize: 14, color: '#4A4A4A' }}>
-                    Subtotal
-                  </Text>
+              <View style={styles.totalsContent}>
+                <View style={styles.subtotalRow}>
+                  <Text style={styles.infoLabel}>Subtotal</Text>
                   <Text
-                    style={{
-                      textDecorationLine: hasDiscount ? 'line-through' : 'none',
-                      fontSize: 12,
-                      fontWeight: 'bold',
-                      color: '#4A4A4A',
-                    }}
+                    style={[
+                      styles.subtotalValue,
+                      hasDiscount && styles.subtotalValueStrikethrough,
+                    ]}
                   >
                     R$ {formatCurrency(totalPrice)}
                   </Text>
                 </View>
                 {hasDiscount && (
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      borderBottomWidth: 1,
-                      borderColor: '#F0F0F0',
-                      paddingVertical: 8,
-                    }}
-                  >
-                    <View style={{ flexDirection: 'row', gap: 8 }}>
-                      <Text style={{ fontSize: 14, color: '#4A4A4A' }}>
-                        Desconto
-                      </Text>
+                  <View style={styles.discountRow}>
+                    <View style={styles.discountLabelWrapper}>
+                      <Text style={styles.infoLabel}>Desconto</Text>
                       <View>
-                        <Text
-                          style={{
-                            fontSize: 12,
-                            color: '#30752F',
-                            paddingVertical: 2,
-                            paddingHorizontal: 6,
-                            backgroundColor: '#BFF7BE',
-                            borderRadius: 4,
-                          }}
-                        >
+                        <Text style={styles.discountBadge}>
                           {quote.discountPct}% off
                         </Text>
                       </View>
                     </View>
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        fontWeight: 'bold',
-                        color: '#30752F',
-                      }}
-                    >
+                    <Text style={styles.discountValue}>
                       - R$ {formatCurrency(totalDiscount)}
                     </Text>
                   </View>
                 )}
-                <View
-                  style={{
-                    marginTop: 8,
-                    paddingVertical: 8,
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: 14,
-                      color: '#0F0F0F',
-                      fontWeight: 'bold',
-                    }}
-                  >
-                    Investimento total
-                  </Text>
+                <View style={styles.totalRow}>
+                  <Text style={styles.totalLabel}>Investimento total</Text>
                   <CompleteAmount amount={totalPriceWithDiscount} />
                 </View>
               </View>

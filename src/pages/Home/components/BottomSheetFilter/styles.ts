@@ -25,4 +25,13 @@ export const styles = StyleSheet.create({
   separator: {
     width: 12,
   },
+  radioIcon: {
+    marginRight: 8,
+  },
+  radioIconActive: {
+    color: '#6A46EB',
+  },
+  radioIconInactive: {
+    color: '#676767',
+  },
 });

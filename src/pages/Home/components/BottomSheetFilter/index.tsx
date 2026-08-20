@@ -89,10 +89,12 @@ export default function BottomSheetFilter({ onClose }: BottomSheetFilterProps) {
                 }
                 size={24}
                 color={ordenation === option ? '#6A46EB' : undefined}
-                style={{
-                  marginRight: 8,
-                  color: ordenation === option ? '#6A46EB' : '#676767',
-                }}
+                style={[
+                  styles.radioIcon,
+                  ordenation === option
+                    ? styles.radioIconActive
+                    : styles.radioIconInactive,
+                ]}
               />
               <Text key={option}>{option}</Text>
             </Pressable>

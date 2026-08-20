@@ -70,7 +70,7 @@ export default function QuoteDetailsPage() {
         >
           <View style={styles.containerContentHeader}>
             <MaterialIcons name="arrow-back-ios" size={20} color="#4A4A4A" />
-            <Text>Orçamento #{quote?.id}</Text>
+            <Text>Orçamento #{quote?.quoteNumber}</Text>
           </View>
           <Status status={quote?.status} />
         </Pressable>

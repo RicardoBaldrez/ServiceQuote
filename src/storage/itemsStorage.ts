@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ITEMS_STORAGE_KEY = '@service_quote:items';
+const NEXT_NUMBER_STORAGE_KEY = '@service_quote:next_quote_number';
 
 async function get(): Promise<any[]> {
   try {
@@ -13,7 +14,10 @@ async function get(): Promise<any[]> {
 
 async function add(item: any): Promise<void> {
   const items = await get();
-  const updateItems = [...items, item];
+  const stored = await AsyncStorage.getItem(NEXT_NUMBER_STORAGE_KEY);
+  const number = stored ? Number(stored) + 1 : 1;
+  await AsyncStorage.setItem(NEXT_NUMBER_STORAGE_KEY, String(number));
+  const updateItems = [...items, { ...item, quoteNumber: number }];
   await save(updateItems);
 }
 

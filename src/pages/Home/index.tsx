@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+import { useCallback, useState } from 'react';
 import { FlatList, View } from 'react-native';
 
 import FilterButton from '@/components/FilterButton';
@@ -17,13 +18,15 @@ export default function HomePage() {
   const [showBottomSheetFilter, setShowBottomSheetFilter] =
     useState<boolean>(false);
 
-  useEffect(() => {
-    const fetchItems = async () => {
-      const items = await itemsStorage.get();
-      setQuotes(items);
-    };
-    fetchItems();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      const fetchItems = async () => {
+        const items = await itemsStorage.get();
+        setQuotes(items);
+      };
+      fetchItems();
+    }, []),
+  );
 
   return (
     <>

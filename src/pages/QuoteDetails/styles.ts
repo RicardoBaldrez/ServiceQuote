@@ -1,6 +1,9 @@
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
+  containerGeral: {
+    flex: 1,
+  },
   pressableHeader: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -15,6 +18,7 @@ export const styles = StyleSheet.create({
   containerDetails: {
     padding: 20,
     gap: 20,
+    flex: 1,
   },
   loadingContainer: {
     flex: 1,
@@ -134,5 +138,17 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     color: '#0F0F0F',
     fontWeight: 'bold',
+  },
+  footer: {
+    borderTopWidth: 1,
+    borderColor: '#F0F0F0',
+    padding: 20,
+    paddingBottom: 40,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  footerIconButtons: {
+    flexDirection: 'row',
+    gap: 1,
   },
 });

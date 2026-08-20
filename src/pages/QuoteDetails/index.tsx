@@ -3,6 +3,7 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { useCallback, useEffect, useState } from 'react';
 import { View, Text, Pressable, Alert } from 'react-native';
 
+import Button from '@/components/Button';
 import CompleteAmount from '@/components/CompleteAmount';
 import Header from '@/components/Header';
 import InfoCard from '@/components/InfoCard';
@@ -51,7 +52,7 @@ export default function QuoteDetailsPage() {
   const hasDiscount = quote.discountPct > 0;
 
   return (
-    <View>
+    <View style={styles.containerGeral}>
       <Header>
         <Pressable
           onPress={() => navigation.goBack()}
@@ -137,6 +138,31 @@ export default function QuoteDetailsPage() {
             </View>
           </View>
         </InfoCard>
+      </View>
+      <View style={styles.footer}>
+        <View style={styles.footerIconButtons}>
+          <Button
+            label="Visualizar orçamento"
+            variant="rounded"
+            icon={<MaterialIcons name="delete" size={20} color="#DB4D4D" />}
+          />
+          <Button
+            label="Visualizar orçamento"
+            variant="rounded"
+            icon={
+              <MaterialIcons name="content-copy" size={20} color="#6A46EB" />
+            }
+          />
+          <Button
+            label="Visualizar orçamento"
+            variant="rounded"
+            icon={<MaterialIcons name="edit" size={20} color="#6A46EB" />}
+          />
+        </View>
+        <Button
+          label="Compartilhar"
+          icon={<MaterialIcons name="share" size={20} color="#FFFFFF" />}
+        />
       </View>
     </View>
   );

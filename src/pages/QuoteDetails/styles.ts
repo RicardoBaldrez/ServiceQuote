@@ -17,8 +17,9 @@ export const styles = StyleSheet.create({
   },
   containerDetails: {
     padding: 20,
+  },
+  containerDetailsContent: {
     gap: 20,
-    flex: 1,
   },
   loadingContainer: {
     flex: 1,
@@ -146,6 +147,7 @@ export const styles = StyleSheet.create({
     paddingBottom: 40,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginTop: 20,
   },
   footerIconButtons: {
     flexDirection: 'row',

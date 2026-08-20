@@ -1,7 +1,7 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { useCallback, useEffect, useState } from 'react';
-import { View, Text, Pressable, Alert } from 'react-native';
+import { View, Text, Pressable, Alert, ScrollView } from 'react-native';
 
 import Button from '@/components/Button';
 import CompleteAmount from '@/components/CompleteAmount';
@@ -34,6 +34,21 @@ export default function QuoteDetailsPage() {
     }
   }, [id]);
 
+  const { totalPrice, totalPriceWithDiscount, totalDiscount } =
+    calculateQuoteTotals(quote?.items ?? [], quote?.discountPct ?? 0);
+
+  const hasDiscount = quote?.discountPct > 0;
+
+  const handleremoveQuote = useCallback(async () => {
+    try {
+      await itemsStorage.remove(id);
+      navigation.goBack();
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Erro', 'Erro ao remover orçamento');
+    }
+  }, [navigation]);
+
   useEffect(() => {
     getQuote();
   }, [id, getQuote]);
@@ -45,11 +60,6 @@ export default function QuoteDetailsPage() {
       </View>
     );
   }
-
-  const { totalPrice, totalPriceWithDiscount, totalDiscount } =
-    calculateQuoteTotals(quote.items ?? [], quote.discountPct ?? 0);
-
-  const hasDiscount = quote.discountPct > 0;
 
   return (
     <View style={styles.containerGeral}>
@@ -65,7 +75,10 @@ export default function QuoteDetailsPage() {
           <Status status={quote?.status} />
         </Pressable>
       </Header>
-      <View style={styles.containerDetails}>
+      <ScrollView
+        style={styles.containerDetails}
+        contentContainerStyle={styles.containerDetailsContent}
+      >
         <View style={styles.quoteInfoCard}>
           <View style={styles.quoteInfoHeader}>
             <View style={styles.quoteInfoIcon}>
@@ -138,13 +151,26 @@ export default function QuoteDetailsPage() {
             </View>
           </View>
         </InfoCard>
-      </View>
+      </ScrollView>
       <View style={styles.footer}>
         <View style={styles.footerIconButtons}>
           <Button
             label="Visualizar orçamento"
             variant="rounded"
             icon={<MaterialIcons name="delete" size={20} color="#DB4D4D" />}
+            onPress={() =>
+              Alert.alert(
+                'Excluir cotação',
+                'Tem certeza que deseja excluir esta cotação?',
+                [
+                  {
+                    text: 'Cancelar',
+                    style: 'cancel',
+                  },
+                  { text: 'Excluir', onPress: handleremoveQuote },
+                ],
+              )
+            }
           />
           <Button
             label="Visualizar orçamento"

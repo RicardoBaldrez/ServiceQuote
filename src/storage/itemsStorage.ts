@@ -23,6 +23,12 @@ async function getById(id: string): Promise<any | null> {
   return item || null;
 }
 
+async function remove(id: string): Promise<void> {
+  const items = await get();
+  const updateItems = items.filter((item) => item.id !== id);
+  await save(updateItems);
+}
+
 async function save(items: any[]): Promise<void> {
   try {
     await AsyncStorage.setItem(ITEMS_STORAGE_KEY, JSON.stringify(items));
@@ -35,5 +41,6 @@ export const itemsStorage = {
   get,
   add,
   getById,
+  remove,
   save,
 };

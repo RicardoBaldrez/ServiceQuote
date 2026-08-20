@@ -7,4 +7,13 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  filterWrapper: {
+    flex: 1,
+  },
+  listContainer: {
+    marginHorizontal: 20,
+  },
+  listContent: {
+    gap: 20,
+  },
 });

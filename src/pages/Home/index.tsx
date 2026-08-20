@@ -10,6 +10,8 @@ import HomeFilter from '@/pages/Home/components/HomeFilter';
 import HomeHeader from '@/pages/Home/components/HomeHeader';
 import { itemsStorage } from '@/storage/itemsStorage';
 
+import { styles } from './styles';
+
 export default function HomePage() {
   const [quotes, setQuotes] = useState<any[]>([]);
   const [showBottomSheetFilter, setShowBottomSheetFilter] =
@@ -28,27 +30,17 @@ export default function HomePage() {
       <Header>
         <HomeHeader />
       </Header>
-      <View
-        style={{
-          marginHorizontal: 20,
-          marginVertical: 24,
-          flexDirection: 'row',
-        }}
-      >
-        <View style={{ flex: 1 }}>
+      <View style={styles.filterContainer}>
+        <View style={styles.filterWrapper}>
           <HomeFilter />
         </View>
         <FilterButton onPress={() => setShowBottomSheetFilter(true)} />
       </View>
-      <View
-        style={{
-          marginHorizontal: 20,
-        }}
-      >
+      <View style={styles.listContainer}>
         <FlatList
           data={quotes}
           keyExtractor={(item) => item.id.toString()}
-          contentContainerStyle={{ gap: 20 }}
+          contentContainerStyle={styles.listContent}
           renderItem={({ item }) => (
             <QuoteCard
               id={item.id}

@@ -14,6 +14,6 @@ export const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   listContent: {
-    gap: 20,
+    gap: 16,
   },
 });

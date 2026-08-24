@@ -9,6 +9,7 @@ import Header from '@/components/Header';
 import InfoCard from '@/components/InfoCard';
 import ServiceInformation from '@/components/ServiceInformation';
 import Status from '@/components/Status';
+import { StatusType } from '@/components/Status/types';
 
 import { RootStackParamList } from '@/routes';
 import { itemsStorage } from '@/storage/itemsStorage';
@@ -39,7 +40,7 @@ export default function QuoteDetailsPage() {
 
   const hasDiscount = quote?.discountPct > 0;
 
-  const handleremoveQuote = useCallback(async () => {
+  const handleRemoveQuote = useCallback(async () => {
     try {
       await itemsStorage.remove(id);
       navigation.goBack();
@@ -47,7 +48,27 @@ export default function QuoteDetailsPage() {
       console.error(error);
       Alert.alert('Erro', 'Erro ao remover orçamento');
     }
-  }, [navigation]);
+  }, [navigation, id]);
+
+  const handleCopyQuote = useCallback(async () => {
+    try {
+      if (!quote) return;
+
+      const now = new Date().toISOString();
+
+      await itemsStorage.add({
+        ...quote,
+        id: Math.random().toString(36).substring(2),
+        status: StatusType.Draft,
+        createdAt: now,
+        updatedAt: now,
+      });
+      navigation.navigate('Home' as never);
+    } catch (error) {
+      console.error(error);
+      Alert.alert('erro', 'Erro ao copiar orçamento.');
+    }
+  }, [quote, navigation]);
 
   useEffect(() => {
     getQuote();
@@ -155,7 +176,6 @@ export default function QuoteDetailsPage() {
       <View style={styles.footer}>
         <View style={styles.footerIconButtons}>
           <Button
-            label="Visualizar orçamento"
             variant="rounded"
             icon={<MaterialIcons name="delete" size={20} color="#DB4D4D" />}
             onPress={() =>
@@ -167,20 +187,19 @@ export default function QuoteDetailsPage() {
                     text: 'Cancelar',
                     style: 'cancel',
                   },
-                  { text: 'Excluir', onPress: handleremoveQuote },
+                  { text: 'Excluir', onPress: handleRemoveQuote },
                 ],
               )
             }
           />
           <Button
-            label="Visualizar orçamento"
             variant="rounded"
             icon={
               <MaterialIcons name="content-copy" size={20} color="#6A46EB" />
             }
+            onPress={handleCopyQuote}
           />
           <Button
-            label="Visualizar orçamento"
             variant="rounded"
             icon={<MaterialIcons name="edit" size={20} color="#6A46EB" />}
           />

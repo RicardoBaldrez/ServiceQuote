@@ -1,3 +1,3 @@
 export const limitChars = (text: string) => {
-  return text.length > 30 ? text.substring(0, 30) + '...' : text;
+  return text?.length > 30 ? text.substring(0, 30) + '...' : text;
 };

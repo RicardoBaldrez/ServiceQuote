@@ -18,6 +18,7 @@ import Status from '@/components/Status';
 import { StatusType } from '@/components/Status/types';
 
 import BottomSheetServices from '@/pages/NewQuote/components/BottomSheetServices';
+import { useServices } from '@/pages/NewQuote/hooks/useServices';
 import { RootStackParamList } from '@/routes';
 import { itemsStorage } from '@/storage/itemsStorage';
 import { calculateQuoteTotals, formatCurrency } from '@/utils';
@@ -27,8 +28,6 @@ import { styles } from './styles';
 export default function NewQuotePage() {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
-  const [showBottomSheetServices, setShowBottomSheetServices] = useState(false);
-
   const { id } =
     useRoute<RouteProp<RootStackParamList, 'NewQuote'>>().params || {};
 
@@ -36,10 +35,20 @@ export default function NewQuotePage() {
   const [client, setClient] = useState<string>('');
   const [statusChose, setStatusChose] = useState<StatusType>(StatusType.Draft);
   const [discountPct, setDiscountPct] = useState<string>('0');
-  const [services, setServices] = useState<any[]>([]);
   const [createdAt, setCreatedAt] = useState<string | undefined>(undefined);
   const [quoteNumber, setQuoteNumber] = useState<number | undefined>(undefined);
-  const [serviceChosed, setServiceChosed] = useState<any>(null);
+
+  const {
+    services,
+    setServices,
+    serviceChosed,
+    showBottomSheetServices,
+    openBottomSheet,
+    closeBottomSheet,
+    createService,
+    editService,
+    deleteService,
+  } = useServices();
 
   const { totalPrice, totalPriceWithDiscount, totalDiscount } =
     calculateQuoteTotals(services, discountPct);
@@ -90,17 +99,6 @@ export default function NewQuotePage() {
         Alert.alert('Erro', error as string);
       }
     }
-  };
-
-  const handleCreateService = (service: any) => {
-    setServices((prev) => [...prev, service]);
-  };
-
-  const handleEditService = (service: any) => {
-    setServices((prev) => prev.map((s) => (s.id === service.id ? service : s)));
-  };
-  const handleDeleteService = (service: any) => {
-    setServices((prev) => prev.filter((s) => s.id !== service.id));
   };
 
   const getQuote = useCallback(async () => {
@@ -186,17 +184,14 @@ export default function NewQuotePage() {
               <ServiceInformation
                 key={service.id}
                 service={service}
-                onEdit={(service) => {
-                  setShowBottomSheetServices(true);
-                  setServiceChosed(service);
-                }}
+                onEdit={openBottomSheet}
               />
             ))}
             <Button
               icon={<MaterialIcons name="add" size={24} color="#6A46EB" />}
               label="Adicionar serviço"
               variant="secondary"
-              onPress={() => setShowBottomSheetServices(true)}
+              onPress={() => openBottomSheet()}
               style={styles.addServiceButton}
             />
           </InfoCard>
@@ -267,13 +262,10 @@ export default function NewQuotePage() {
       </ScrollView>
       {showBottomSheetServices && (
         <BottomSheetServices
-          onClose={() => {
-            setShowBottomSheetServices(false);
-            setServiceChosed(null);
-          }}
-          onCreate={handleCreateService}
-          onEdit={handleEditService}
-          onDelete={handleDeleteService}
+          onClose={closeBottomSheet}
+          onCreate={createService}
+          onEdit={editService}
+          onDelete={deleteService}
           service={serviceChosed}
         />
       )}

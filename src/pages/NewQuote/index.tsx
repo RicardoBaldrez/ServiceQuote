@@ -75,6 +75,7 @@ export default function NewQuotePage() {
 
       try {
         await itemsStorage.update(updateItem);
+        Alert.alert('Sucesso', 'Orçamento atualizado com sucesso');
         navigation.navigate('Home');
       } catch (error) {
         Alert.alert('Erro', error as string);
@@ -94,6 +95,7 @@ export default function NewQuotePage() {
 
       try {
         await itemsStorage.add(newItem);
+        Alert.alert('Sucesso', 'Orçamento criado com sucesso');
         navigation.navigate('Home');
       } catch (error) {
         Alert.alert('Erro', error as string);

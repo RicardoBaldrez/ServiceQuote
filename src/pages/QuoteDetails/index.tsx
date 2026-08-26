@@ -48,6 +48,7 @@ export default function QuoteDetailsPage() {
   const handleRemoveQuote = useCallback(async () => {
     try {
       await itemsStorage.remove(id);
+      Alert.alert('Sucesso', 'Orçamento removido com sucesso');
       navigation.goBack();
     } catch (error) {
       console.error(error);
@@ -68,6 +69,7 @@ export default function QuoteDetailsPage() {
         createdAt: now,
         updatedAt: now,
       });
+      Alert.alert('Sucesso', 'Orçamento copiado com sucesso');
       navigation.navigate('Home');
     } catch (error) {
       console.error(error);

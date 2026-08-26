@@ -6,14 +6,16 @@ import BottomSheet from '@/components/BottomSheet';
 import Button from '@/components/Button';
 import Input from '@/components/Input';
 
+import { Service } from '@/types/service';
+
 import { styles } from './styles';
 
 interface BottomSheetServicesProps {
   onClose: () => void;
-  onCreate: (service: any) => void;
-  onEdit: (service: any) => void;
-  onDelete: (service: any) => void;
-  service?: any;
+  onCreate: (service: Service) => void;
+  onEdit: (service: Service) => void;
+  onDelete: (service: Service) => void;
+  service?: Service;
 }
 
 export default function BottomSheetServices({
@@ -39,20 +41,27 @@ export default function BottomSheetServices({
 
   const handleSave = () => {
     if (service) {
-      onEdit({ id: service.id, title, description, price, quantity });
+      onEdit({
+        id: service.id,
+        title,
+        description,
+        price: Number(price),
+        quantity: Number(quantity),
+      });
     } else {
       onCreate({
         id: Math.random().toString(36).substring(2),
         title,
         description,
-        price,
-        quantity,
+        price: Number(price),
+        quantity: Number(quantity),
       });
     }
     onClose();
   };
 
   const handleDelete = () => {
+    if (!service) return;
     onDelete(service);
     onClose();
   };

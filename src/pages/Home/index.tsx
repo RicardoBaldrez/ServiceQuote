@@ -10,11 +10,12 @@ import BottomSheetFilter from '@/pages/Home/components/BottomSheetFilter';
 import HomeFilter from '@/pages/Home/components/HomeFilter';
 import HomeHeader from '@/pages/Home/components/HomeHeader';
 import { itemsStorage } from '@/storage/itemsStorage';
+import { Quote } from '@/types/quote';
 
 import { styles } from './styles';
 
 export default function HomePage() {
-  const [quotes, setQuotes] = useState<any[]>([]);
+  const [quotes, setQuotes] = useState<Quote[]>([]);
   const [showBottomSheetFilter, setShowBottomSheetFilter] =
     useState<boolean>(false);
 

@@ -1,11 +1,13 @@
 import { useState } from 'react';
 
+import { Service } from '@/types/service';
+
 export function useServices() {
-  const [services, setServices] = useState<any[]>([]);
-  const [serviceChosed, setServiceChosed] = useState<any>(null);
+  const [services, setServices] = useState<Service[]>([]);
+  const [serviceChosed, setServiceChosed] = useState<Service | null>(null);
   const [showBottomSheetServices, setShowBottomSheetServices] = useState(false);
 
-  const openBottomSheet = (service?: any) => {
+  const openBottomSheet = (service?: Service) => {
     setServiceChosed(service ?? null);
     setShowBottomSheetServices(true);
   };
@@ -15,15 +17,15 @@ export function useServices() {
     setServiceChosed(null);
   };
 
-  const createService = (service: any) => {
+  const createService = (service: Service) => {
     setServices((prev) => [...prev, service]);
   };
 
-  const editService = (service: any) => {
+  const editService = (service: Service) => {
     setServices((prev) => prev.map((s) => (s.id === service.id ? service : s)));
   };
 
-  const deleteService = (service: any) => {
+  const deleteService = (service: Service) => {
     setServices((prev) => prev.filter((s) => s.id !== service.id));
   };
 

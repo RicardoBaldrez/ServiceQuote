@@ -3,17 +3,10 @@ import { Pressable, Text, View } from 'react-native';
 
 import CompleteAmount from '@/components/CompleteAmount';
 
+import { Service } from '@/types/service';
 import { limitChars } from '@/utils';
 
 import { styles } from './styles';
-
-interface Service {
-  id: string;
-  title: string;
-  description: string;
-  price: number;
-  quantity: number;
-}
 
 interface ServiceInformationProps {
   service: Service;

@@ -18,6 +18,7 @@ import { StatusType } from '@/components/Status/types';
 
 import { RootStackParamList } from '@/routes';
 import { itemsStorage } from '@/storage/itemsStorage';
+import { Quote } from '@/types/quote';
 import { calculateQuoteTotals, formatCurrency, formatDate } from '@/utils';
 
 import { styles } from './styles';
@@ -25,7 +26,7 @@ import { styles } from './styles';
 export default function QuoteDetailsPage() {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
-  const [quote, setQuote] = useState<any | null>(null);
+  const [quote, setQuote] = useState<Quote | null>(null);
 
   const { id } =
     useRoute<RouteProp<RootStackParamList, 'QuoteDetails'>>().params;
@@ -43,7 +44,7 @@ export default function QuoteDetailsPage() {
   const { totalPrice, totalPriceWithDiscount, totalDiscount } =
     calculateQuoteTotals(quote?.items ?? [], quote?.discountPct ?? 0);
 
-  const hasDiscount = quote?.discountPct > 0;
+  const hasDiscount = Number(quote?.discountPct) > 0;
 
   const handleRemoveQuote = useCallback(async () => {
     try {
@@ -134,7 +135,7 @@ export default function QuoteDetailsPage() {
           </View>
         </View>
         <InfoCard title="Serviços inclusos" icon="article">
-          {quote?.items?.map((service: any) => (
+          {quote?.items?.map((service) => (
             <ServiceInformation key={service.id} service={service} />
           ))}
         </InfoCard>

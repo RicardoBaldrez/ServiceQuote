@@ -68,7 +68,7 @@ export default function NewQuotePage() {
         status: statusChose,
         discountPct,
         items: services,
-        createdAt,
+        createdAt: createdAt ?? new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         quoteNumber,
       };
@@ -268,7 +268,7 @@ export default function NewQuotePage() {
           onCreate={createService}
           onEdit={editService}
           onDelete={deleteService}
-          service={serviceChosed}
+          service={serviceChosed ?? undefined}
         />
       )}
     </>

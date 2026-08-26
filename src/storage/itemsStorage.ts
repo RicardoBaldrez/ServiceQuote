@@ -12,6 +12,12 @@ async function get(): Promise<any[]> {
   }
 }
 
+async function getById(id: string): Promise<any | null> {
+  const items = await get();
+  const item = items.find((item) => item.id === id);
+  return item || null;
+}
+
 async function add(item: any): Promise<void> {
   const items = await get();
   const stored = await AsyncStorage.getItem(NEXT_NUMBER_STORAGE_KEY);
@@ -21,10 +27,10 @@ async function add(item: any): Promise<void> {
   await save(updateItems);
 }
 
-async function getById(id: string): Promise<any | null> {
+async function update(item: any): Promise<void> {
   const items = await get();
-  const item = items.find((item) => item.id === id);
-  return item || null;
+  const updateItems = items.map((i) => (i.id === item.id ? item : i));
+  await save(updateItems);
 }
 
 async function remove(id: string): Promise<void> {
@@ -43,8 +49,9 @@ async function save(items: any[]): Promise<void> {
 
 export const itemsStorage = {
   get,
-  add,
   getById,
+  add,
   remove,
   save,
+  update,
 };

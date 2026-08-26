@@ -1,6 +1,11 @@
 import { MaterialIcons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
-import { useState } from 'react';
+import {
+  NavigationProp,
+  RouteProp,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
+import { useState, useEffect, useCallback } from 'react';
 import { View, Text, Pressable, ScrollView, Alert } from 'react-native';
 
 import Button from '@/components/Button';
@@ -13,49 +18,77 @@ import Status from '@/components/Status';
 import { StatusType } from '@/components/Status/types';
 
 import BottomSheetServices from '@/pages/NewQuote/components/BottomSheetServices';
+import { RootStackParamList } from '@/routes';
 import { itemsStorage } from '@/storage/itemsStorage';
 import { calculateQuoteTotals, formatCurrency } from '@/utils';
 
 import { styles } from './styles';
 
 export default function NewQuotePage() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   const [showBottomSheetServices, setShowBottomSheetServices] = useState(false);
+
+  const { id } =
+    useRoute<RouteProp<RootStackParamList, 'NewQuote'>>().params || {};
 
   const [title, setTitle] = useState<string>('');
   const [client, setClient] = useState<string>('');
   const [statusChose, setStatusChose] = useState<StatusType>(StatusType.Draft);
   const [discountPct, setDiscountPct] = useState<string>('0');
   const [services, setServices] = useState<any[]>([]);
+  const [createdAt, setCreatedAt] = useState<string | undefined>(undefined);
+  const [quoteNumber, setQuoteNumber] = useState<number | undefined>(undefined);
   const [serviceChosed, setServiceChosed] = useState<any>(null);
 
   const { totalPrice, totalPriceWithDiscount, totalDiscount } =
     calculateQuoteTotals(services, discountPct);
 
   const handleSaveItems = async () => {
-    const newItem = {
-      id: Math.random().toString(36).substring(2),
-      title,
-      client,
-      price: totalPriceWithDiscount,
-      status: statusChose,
-      discountPct,
-      items: services,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
-
     if (title === '' || client === '') {
       Alert.alert('Erro', 'Título e cliente são campos obrigatórios');
       return;
     }
 
-    try {
-      await itemsStorage.add(newItem);
-      navigation.navigate('Home' as never);
-    } catch (error) {
-      Alert.alert('Erro', error as string);
+    if (id) {
+      const updateItem = {
+        id,
+        title,
+        client,
+        price: totalPriceWithDiscount,
+        status: statusChose,
+        discountPct,
+        items: services,
+        createdAt,
+        updatedAt: new Date().toISOString(),
+        quoteNumber,
+      };
+
+      try {
+        await itemsStorage.update(updateItem);
+        navigation.navigate('Home');
+      } catch (error) {
+        Alert.alert('Erro', error as string);
+      }
+    } else {
+      const newItem = {
+        id: Math.random().toString(36).substring(2),
+        title,
+        client,
+        price: totalPriceWithDiscount,
+        status: statusChose,
+        discountPct,
+        items: services,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+
+      try {
+        await itemsStorage.add(newItem);
+        navigation.navigate('Home');
+      } catch (error) {
+        Alert.alert('Erro', error as string);
+      }
     }
   };
 
@@ -69,6 +102,27 @@ export default function NewQuotePage() {
   const handleDeleteService = (service: any) => {
     setServices((prev) => prev.filter((s) => s.id !== service.id));
   };
+
+  const getQuote = useCallback(async () => {
+    try {
+      const quote = await itemsStorage.getById(id as string);
+      setTitle(quote?.title ?? '');
+      setClient(quote?.client ?? '');
+      setStatusChose(quote?.status ?? StatusType.Draft);
+      setDiscountPct(quote?.discountPct ?? '0');
+      setServices(quote?.items ?? []);
+      setCreatedAt(quote?.createdAt);
+      setQuoteNumber(quote?.quoteNumber);
+    } catch (error) {
+      Alert.alert('Erro', error as string);
+    }
+  }, [id]);
+
+  useEffect(() => {
+    if (id) {
+      getQuote();
+    }
+  }, [id, getQuote]);
 
   return (
     <>

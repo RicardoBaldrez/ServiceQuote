@@ -7,7 +7,7 @@ import QuoteDetailsPage from '@/pages/QuoteDetails';
 
 export type RootStackParamList = {
   Home: undefined;
-  NewQuote: undefined;
+  NewQuote: { id?: string };
   QuoteDetails: { id: string };
 };
 

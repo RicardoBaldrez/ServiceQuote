@@ -1,5 +1,10 @@
 import { MaterialIcons } from '@expo/vector-icons';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import {
+  NavigationProp,
+  RouteProp,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
 import { useCallback, useEffect, useState } from 'react';
 import { View, Text, Pressable, Alert, ScrollView } from 'react-native';
 
@@ -18,7 +23,7 @@ import { calculateQuoteTotals, formatCurrency, formatDate } from '@/utils';
 import { styles } from './styles';
 
 export default function QuoteDetailsPage() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   const [quote, setQuote] = useState<any | null>(null);
 
@@ -63,7 +68,7 @@ export default function QuoteDetailsPage() {
         createdAt: now,
         updatedAt: now,
       });
-      navigation.navigate('Home' as never);
+      navigation.navigate('Home');
     } catch (error) {
       console.error(error);
       Alert.alert('erro', 'Erro ao copiar orçamento.');
@@ -202,6 +207,7 @@ export default function QuoteDetailsPage() {
           <Button
             variant="rounded"
             icon={<MaterialIcons name="edit" size={20} color="#6A46EB" />}
+            onPress={() => navigation.navigate('NewQuote', { id: quote?.id })}
           />
         </View>
         <Button

@@ -37,8 +37,8 @@ async function update(item: Quote): Promise<void> {
 
 async function remove(id: string): Promise<void> {
   const items = await get();
-  const updateItems = items.filter((item) => item.id !== id);
-  await save(updateItems);
+  const removeItem = items.filter((item) => item.id !== id);
+  await save(removeItem);
 }
 
 async function save(items: Quote[]): Promise<void> {

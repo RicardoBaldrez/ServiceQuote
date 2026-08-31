@@ -1,6 +1,8 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { View, Text } from 'react-native';
 
+import { colors } from '@/theme/colors';
+
 import { styles } from './styles';
 import Header from '../Header';
 
@@ -15,7 +17,7 @@ export default function InfoCard({ title, icon, children }: InfoCardProps) {
     if (title && icon) {
       return (
         <Header>
-          <MaterialIcons name={icon} size={24} color="#6A46EB" />
+          <MaterialIcons name={icon} size={24} color={colors.primary} />
           <Text>{title}</Text>
         </Header>
       );

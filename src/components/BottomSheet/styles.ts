@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native';
 
+import { colors } from '@/theme/colors';
+
 export const styles = StyleSheet.create({
   overlay: {
     position: 'absolute',
@@ -7,7 +9,7 @@ export const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: colors.overlay,
   },
   overlayPressable: {
     flex: 1,
@@ -23,7 +25,7 @@ export const styles = StyleSheet.create({
   },
   container: {
     borderRadius: 12,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.white,
   },
   header: {
     flex: 1,
@@ -34,7 +36,7 @@ export const styles = StyleSheet.create({
   title: {
     fontSize: 14,
     fontWeight: 'bold',
-    color: '#0F0F0F',
+    color: colors.textPrimary,
   },
   content: {
     paddingHorizontal: 20,
@@ -42,7 +44,7 @@ export const styles = StyleSheet.create({
   },
   footer: {
     borderTopWidth: 1,
-    borderColor: '#F0F0F0',
+    borderColor: colors.borderLight,
     padding: 20,
     flexDirection: 'row',
     justifyContent: 'center',

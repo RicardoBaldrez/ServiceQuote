@@ -21,7 +21,7 @@ import BottomSheetServices from '@/pages/NewQuote/components/BottomSheetServices
 import { useServices } from '@/pages/NewQuote/hooks/useServices';
 import { RootStackParamList } from '@/routes';
 import { itemsStorage } from '@/storage/itemsStorage';
-import { calculateQuoteTotals, formatCurrency } from '@/utils';
+import { calculateQuoteTotals, formatCurrency, generateId } from '@/utils';
 
 import { styles } from './styles';
 
@@ -76,47 +76,44 @@ export default function NewQuotePage() {
       return;
     }
 
-    if (id) {
-      const updateItem = {
-        id,
-        title,
-        client,
-        price: totalPriceWithDiscount,
-        status: statusChose,
-        discountPct,
-        items: services,
-        createdAt: createdAt ?? new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        quoteNumber,
-      };
+    const quotePayload = {
+      title,
+      client,
+      price: totalPriceWithDiscount,
+      status: statusChose,
+      discountPct,
+      items: services,
+      updatedAt: new Date().toISOString(),
+    };
 
-      try {
-        await itemsStorage.update(updateItem);
+    try {
+      if (id) {
+        if (!createdAt) {
+          Alert.alert(
+            'Erro',
+            'Orçamento ainda está carregando, tente novamente',
+          );
+          return;
+        }
+
+        await itemsStorage.update({
+          ...quotePayload,
+          id,
+          createdAt,
+          quoteNumber,
+        });
         Alert.alert('Sucesso', 'Orçamento atualizado com sucesso');
-        navigation.navigate('Home');
-      } catch (error) {
-        Alert.alert('Erro', error as string);
-      }
-    } else {
-      const newItem = {
-        id: Math.random().toString(36).substring(2),
-        title,
-        client,
-        price: totalPriceWithDiscount,
-        status: statusChose,
-        discountPct,
-        items: services,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      };
-
-      try {
-        await itemsStorage.add(newItem);
+      } else {
+        await itemsStorage.add({
+          ...quotePayload,
+          id: generateId(),
+          createdAt: new Date().toISOString(),
+        });
         Alert.alert('Sucesso', 'Orçamento criado com sucesso');
-        navigation.navigate('Home');
-      } catch (error) {
-        Alert.alert('Erro', error as string);
       }
+      navigation.navigate('Home');
+    } catch (error) {
+      Alert.alert('Erro', error as string);
     }
   };
 

@@ -28,17 +28,14 @@ export default function Button({
       style={[
         style,
         styles.container,
-        variant === 'secondary' && { backgroundColor: '#FAFAFA' },
+        variant === 'secondary' && styles.secondaryContainer,
         variant === 'rounded' && styles.roundedLabel,
       ]}
     >
       {icon}
       {label && variant !== 'rounded' && (
         <Text
-          style={[
-            styles.label,
-            variant === 'secondary' && { color: '#6A46Eb' },
-          ]}
+          style={[styles.label, variant === 'secondary' && styles.secondaryLabel]}
         >
           {label}
         </Text>

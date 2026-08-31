@@ -3,6 +3,7 @@ import { Pressable, Text, View } from 'react-native';
 
 import CompleteAmount from '@/components/CompleteAmount';
 
+import { colors } from '@/theme/colors';
 import { Service } from '@/types/service';
 import { limitChars } from '@/utils';
 
@@ -35,7 +36,7 @@ export default function ServiceInformation({
       </View>
       {onEdit && (
         <Pressable style={styles.serviceEdit} onPress={() => onEdit(service)}>
-          <MaterialIcons name="edit" size={24} color="#6A46EB" />
+          <MaterialIcons name="edit" size={24} color={colors.primary} />
         </Pressable>
       )}
     </View>

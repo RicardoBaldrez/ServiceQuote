@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native';
 
+import { colors } from '@/theme/colors';
+
 export const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
@@ -7,21 +9,27 @@ export const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     justifyContent: 'center',
     padding: 12,
-    backgroundColor: '#6A46Eb',
+    backgroundColor: colors.primary,
     borderRadius: 999,
     height: 48,
   },
   label: {
-    color: '#FFFFFF',
+    color: colors.white,
     fontSize: 14,
     fontWeight: 'bold',
     paddingHorizontal: 8,
   },
   roundedLabel: {
     borderRadius: 9999,
-    backgroundColor: '#FAFAFA',
+    backgroundColor: colors.background,
     borderWidth: 1,
-    borderColor: '#E6E5E5',
+    borderColor: colors.border,
     marginRight: 8,
+  },
+  secondaryContainer: {
+    backgroundColor: colors.background,
+  },
+  secondaryLabel: {
+    color: colors.primary,
   },
 });

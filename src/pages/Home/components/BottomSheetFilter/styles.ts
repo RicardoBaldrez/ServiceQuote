@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native';
 
+import { colors } from '@/theme/colors';
+
 export const styles = StyleSheet.create({
   contentContainer: {
     flexDirection: 'row',
@@ -11,7 +13,7 @@ export const styles = StyleSheet.create({
   },
   titleContent: {
     fontSize: 12,
-    color: '#676767',
+    color: colors.textMuted,
     marginBottom: 16,
   },
   selectElement: {
@@ -19,7 +21,7 @@ export const styles = StyleSheet.create({
     height: 20,
     borderRadius: 4,
     borderWidth: 1,
-    borderColor: '#A1A2A1',
+    borderColor: colors.checkboxBorder,
     marginRight: 12,
   },
   separator: {
@@ -29,9 +31,9 @@ export const styles = StyleSheet.create({
     marginRight: 8,
   },
   radioIconActive: {
-    color: '#6A46EB',
+    color: colors.primary,
   },
   radioIconInactive: {
-    color: '#676767',
+    color: colors.textMuted,
   },
 });

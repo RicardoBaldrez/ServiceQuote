@@ -10,6 +10,8 @@ import {
 
 import Header from '@/components/Header';
 
+import { colors } from '@/theme/colors';
+
 import { styles } from './styles';
 
 const SHEET_OFFSET = 500;
@@ -77,7 +79,7 @@ export default function BottomSheet({
             <View style={styles.header}>
               <Text style={styles.title}>{title}</Text>
               <TouchableOpacity onPress={handleClose}>
-                <MaterialIcons name="close" size={20} color="#4A4A4A" />
+                <MaterialIcons name="close" size={20} color={colors.textSecondary} />
               </TouchableOpacity>
             </View>
           </Header>

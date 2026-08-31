@@ -7,6 +7,7 @@ import Button from '@/components/Button';
 import Input from '@/components/Input';
 
 import { Service } from '@/types/service';
+import { generateId } from '@/utils';
 
 import { styles } from './styles';
 
@@ -64,7 +65,7 @@ export default function BottomSheetServices({
       onEdit({ id: service.id, ...servicePayload });
     } else {
       onCreate({
-        id: Math.random().toString(36).substring(2),
+        id: generateId(),
         ...servicePayload,
       });
     }

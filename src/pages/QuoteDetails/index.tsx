@@ -19,7 +19,12 @@ import { StatusType } from '@/components/Status/types';
 import { RootStackParamList } from '@/routes';
 import { itemsStorage } from '@/storage/itemsStorage';
 import { Quote } from '@/types/quote';
-import { calculateQuoteTotals, formatCurrency, formatDate } from '@/utils';
+import {
+  calculateQuoteTotals,
+  formatCurrency,
+  formatDate,
+  generateId,
+} from '@/utils';
 
 import { styles } from './styles';
 
@@ -65,7 +70,7 @@ export default function QuoteDetailsPage() {
 
       await itemsStorage.add({
         ...quote,
-        id: Math.random().toString(36).substring(2),
+        id: generateId(),
         status: StatusType.Draft,
         createdAt: now,
         updatedAt: now,

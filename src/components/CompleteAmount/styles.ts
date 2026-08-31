@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native';
 
+import { colors } from '@/theme/colors';
+
 export const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
@@ -8,12 +10,12 @@ export const styles = StyleSheet.create({
   },
   currency: {
     fontSize: 12,
-    color: '#0F0F0F',
+    color: colors.textPrimary,
     marginBottom: 1,
   },
   amount: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#0F0F0F',
+    color: colors.textPrimary,
   },
 });

@@ -6,6 +6,8 @@ import {
   ViewStyle,
 } from 'react-native';
 
+import { colors } from '@/theme/colors';
+
 import { styles } from './styles';
 
 type InputProps = TextInputProps & {
@@ -29,7 +31,7 @@ export default function Input({
         {...rest}
         style={styles.input}
         placeholder={placeholder}
-        placeholderTextColor="#676767"
+        placeholderTextColor={colors.textMuted}
       />
     </View>
   );

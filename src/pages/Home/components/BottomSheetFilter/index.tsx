@@ -8,6 +8,8 @@ import Button from '@/components/Button';
 import Status from '@/components/Status';
 import { StatusType } from '@/components/Status/types';
 
+import { colors } from '@/theme/colors';
+
 import { styles } from './styles';
 
 interface BottomSheetFilterProps {
@@ -65,7 +67,7 @@ export default function BottomSheetFilter({
               onApply(draftChecked, draftOrdenation);
               close();
             }}
-            icon={<MaterialIcons name="check" size={24} color="#FFFFFF" />}
+            icon={<MaterialIcons name="check" size={24} color={colors.white} />}
           />
         </>
       )}
@@ -78,7 +80,7 @@ export default function BottomSheetFilter({
               value={draftChecked.includes(status)}
               onValueChange={() => handleChecked(status)}
               style={styles.selectElement}
-              color={draftChecked.includes(status) ? '#6A46EB' : undefined}
+              color={draftChecked.includes(status) ? colors.primary : undefined}
             />
             <Status key={status} status={status} />
           </View>
@@ -100,7 +102,7 @@ export default function BottomSheetFilter({
                     : 'radio-button-unchecked'
                 }
                 size={24}
-                color={draftOrdenation === option ? '#6A46EB' : undefined}
+                color={draftOrdenation === option ? colors.primary : undefined}
                 style={[
                   styles.radioIcon,
                   draftOrdenation === option

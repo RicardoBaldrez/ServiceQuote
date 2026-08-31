@@ -35,7 +35,10 @@ export default function Button({
       {icon}
       {label && variant !== 'rounded' && (
         <Text
-          style={[styles.label, variant === 'secondary' && styles.secondaryLabel]}
+          style={[
+            styles.label,
+            variant === 'secondary' && styles.secondaryLabel,
+          ]}
         >
           {label}
         </Text>

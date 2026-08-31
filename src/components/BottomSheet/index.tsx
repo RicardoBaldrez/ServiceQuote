@@ -79,7 +79,11 @@ export default function BottomSheet({
             <View style={styles.header}>
               <Text style={styles.title}>{title}</Text>
               <TouchableOpacity onPress={handleClose}>
-                <MaterialIcons name="close" size={20} color={colors.textSecondary} />
+                <MaterialIcons
+                  name="close"
+                  size={20}
+                  color={colors.textSecondary}
+                />
               </TouchableOpacity>
             </View>
           </Header>

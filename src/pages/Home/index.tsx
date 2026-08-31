@@ -1,10 +1,11 @@
 import { useFocusEffect } from '@react-navigation/native';
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { FlatList, View } from 'react-native';
 
 import FilterButton from '@/components/FilterButton';
 import Header from '@/components/Header';
 import QuoteCard from '@/components/QuoteCard';
+import { StatusType } from '@/components/Status/types';
 
 import BottomSheetFilter from '@/pages/Home/components/BottomSheetFilter';
 import HomeFilter from '@/pages/Home/components/HomeFilter';
@@ -18,6 +19,30 @@ export default function HomePage() {
   const [quotes, setQuotes] = useState<Quote[]>([]);
   const [showBottomSheetFilter, setShowBottomSheetFilter] =
     useState<boolean>(false);
+  const [search, setSearch] = useState<string>('');
+  const [checked, setChecked] = useState<StatusType[]>([]);
+  const [ordenation, setOrdenation] = useState('Mais recente');
+
+  const visibleQuotes = useMemo(() => {
+    return quotes
+      .filter(
+        (quote) =>
+          quote.client.toLowerCase().includes(search.toLowerCase()) ||
+          quote.title.toLowerCase().includes(search.toLowerCase()) ||
+          quote.price.toString().includes(search),
+      )
+      .filter(
+        (quote) => checked.length === 0 || checked.includes(quote.status),
+      );
+  }, [quotes, search, checked]);
+
+  const handleApplyFilters = (
+    nextChecked: StatusType[],
+    nextOrdenation: string,
+  ) => {
+    setChecked(nextChecked);
+    setOrdenation(nextOrdenation);
+  };
 
   useFocusEffect(
     useCallback(() => {
@@ -36,13 +61,13 @@ export default function HomePage() {
       </Header>
       <View style={styles.filterContainer}>
         <View style={styles.filterWrapper}>
-          <HomeFilter />
+          <HomeFilter value={search} onChangeText={setSearch} />
         </View>
         <FilterButton onPress={() => setShowBottomSheetFilter(true)} />
       </View>
       <View style={styles.listContainer}>
         <FlatList
-          data={quotes}
+          data={visibleQuotes}
           keyExtractor={(item) => item?.id?.toString()}
           contentContainerStyle={styles.listContent}
           renderItem={({ item }) => (
@@ -58,7 +83,12 @@ export default function HomePage() {
         />
       </View>
       {showBottomSheetFilter && (
-        <BottomSheetFilter onClose={() => setShowBottomSheetFilter(false)} />
+        <BottomSheetFilter
+          onClose={() => setShowBottomSheetFilter(false)}
+          checked={checked}
+          ordenation={ordenation}
+          onApply={handleApplyFilters}
+        />
       )}
     </>
   );

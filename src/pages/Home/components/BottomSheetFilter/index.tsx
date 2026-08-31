@@ -12,11 +12,19 @@ import { styles } from './styles';
 
 interface BottomSheetFilterProps {
   onClose: () => void;
+  checked: StatusType[];
+  ordenation: string;
+  onApply: (checked: StatusType[], ordenation: string) => void;
 }
 
-export default function BottomSheetFilter({ onClose }: BottomSheetFilterProps) {
-  const [checked, setChecked] = useState<StatusType[]>([]);
-  const [ordenation, setOrdenation] = useState('Mais recente');
+export default function BottomSheetFilter({
+  onClose,
+  checked,
+  ordenation,
+  onApply,
+}: BottomSheetFilterProps) {
+  const [draftChecked, setDraftChecked] = useState<StatusType[]>(checked);
+  const [draftOrdenation, setDraftOrdenation] = useState(ordenation);
 
   const ordenationOptions = [
     'Mais recente',
@@ -26,7 +34,7 @@ export default function BottomSheetFilter({ onClose }: BottomSheetFilterProps) {
   ];
 
   const handleChecked = (status: StatusType) => {
-    setChecked((prevStatus: StatusType[]) => {
+    setDraftChecked((prevStatus: StatusType[]) => {
       return prevStatus.includes(status)
         ? prevStatus.filter((item) => item !== status)
         : [...prevStatus, status];
@@ -34,8 +42,8 @@ export default function BottomSheetFilter({ onClose }: BottomSheetFilterProps) {
   };
 
   const resetFilters = () => {
-    setChecked([]);
-    setOrdenation('Mais recente');
+    setDraftChecked([]);
+    setDraftOrdenation('Mais recente');
   };
 
   return (
@@ -52,7 +60,10 @@ export default function BottomSheetFilter({ onClose }: BottomSheetFilterProps) {
           <View style={styles.separator} />
           <Button
             label="Aplicar"
-            onPress={close}
+            onPress={() => {
+              onApply(draftChecked, draftOrdenation);
+              close();
+            }}
             icon={<MaterialIcons name="check" size={24} color="#FFFFFF" />}
           />
         </>
@@ -63,10 +74,10 @@ export default function BottomSheetFilter({ onClose }: BottomSheetFilterProps) {
         {Object.values(StatusType).map((status) => (
           <View key={status} style={styles.contentContainer}>
             <Checkbox
-              value={checked.includes(status)}
+              value={draftChecked.includes(status)}
               onValueChange={() => handleChecked(status)}
               style={styles.selectElement}
-              color={checked.includes(status) ? '#6A46EB' : undefined}
+              color={draftChecked.includes(status) ? '#6A46EB' : undefined}
             />
             <Status key={status} status={status} />
           </View>
@@ -78,20 +89,20 @@ export default function BottomSheetFilter({ onClose }: BottomSheetFilterProps) {
           return (
             <Pressable
               key={option}
-              onPress={() => setOrdenation(option)}
+              onPress={() => setDraftOrdenation(option)}
               style={styles.contentContainer}
             >
               <MaterialIcons
                 name={
-                  ordenation === option
+                  draftOrdenation === option
                     ? 'radio-button-checked'
                     : 'radio-button-unchecked'
                 }
                 size={24}
-                color={ordenation === option ? '#6A46EB' : undefined}
+                color={draftOrdenation === option ? '#6A46EB' : undefined}
                 style={[
                   styles.radioIcon,
-                  ordenation === option
+                  draftOrdenation === option
                     ? styles.radioIconActive
                     : styles.radioIconInactive,
                 ]}

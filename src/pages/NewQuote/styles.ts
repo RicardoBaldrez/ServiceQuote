@@ -5,11 +5,6 @@ export const styles = StyleSheet.create({
     margin: 20,
     gap: 20,
   },
-  backButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
   backButtonText: {
     color: '#0F0F0F',
     fontSize: 14,

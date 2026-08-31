@@ -11,6 +11,7 @@ import { View, Text, Pressable, ScrollView, Alert } from 'react-native';
 import Button from '@/components/Button';
 import CompleteAmount from '@/components/CompleteAmount';
 import Header from '@/components/Header';
+import HeaderBackButton from '@/components/HeaderBackButton';
 import InfoCard from '@/components/InfoCard';
 import Input from '@/components/Input';
 import ServiceInformation from '@/components/ServiceInformation';
@@ -142,13 +143,11 @@ export default function NewQuotePage() {
     <>
       <ScrollView>
         <Header>
-          <Pressable
-            style={styles.backButton}
+          <HeaderBackButton
+            label="Orçamento"
             onPress={() => navigation.goBack()}
-          >
-            <MaterialIcons name="arrow-back-ios" size={20} color="#4A4A4A" />
-            <Text style={styles.backButtonText}>Orçamento</Text>
-          </Pressable>
+            labelStyle={styles.backButtonText}
+          />
         </Header>
         <View style={styles.container}>
           <InfoCard title="Informações gerais" icon="storefront">

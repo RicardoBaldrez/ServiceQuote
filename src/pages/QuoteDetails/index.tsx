@@ -6,11 +6,12 @@ import {
   useRoute,
 } from '@react-navigation/native';
 import { useCallback, useEffect, useState } from 'react';
-import { View, Text, Pressable, Alert, ScrollView, Share } from 'react-native';
+import { View, Text, Alert, ScrollView, Share } from 'react-native';
 
 import Button from '@/components/Button';
 import CompleteAmount from '@/components/CompleteAmount';
 import Header from '@/components/Header';
+import HeaderBackButton from '@/components/HeaderBackButton';
 import InfoCard from '@/components/InfoCard';
 import ServiceInformation from '@/components/ServiceInformation';
 import Status from '@/components/Status';
@@ -125,16 +126,11 @@ export default function QuoteDetailsPage() {
   return (
     <View style={styles.containerGeral}>
       <Header>
-        <Pressable
+        <HeaderBackButton
+          label={`Orçamento #${quote?.quoteNumber}`}
           onPress={() => navigation.goBack()}
-          style={styles.pressableHeader}
-        >
-          <View style={styles.containerContentHeader}>
-            <MaterialIcons name="arrow-back-ios" size={20} color="#4A4A4A" />
-            <Text>Orçamento #{quote?.quoteNumber}</Text>
-          </View>
-          <Status status={quote?.status} />
-        </Pressable>
+          rightSlot={<Status status={quote?.status} />}
+        />
       </Header>
       <ScrollView
         style={styles.containerDetails}

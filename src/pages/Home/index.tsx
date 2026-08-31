@@ -12,6 +12,7 @@ import HomeFilter from '@/pages/Home/components/HomeFilter';
 import HomeHeader from '@/pages/Home/components/HomeHeader';
 import { itemsStorage } from '@/storage/itemsStorage';
 import { Quote } from '@/types/quote';
+import { formatCurrency } from '@/utils';
 
 import { styles } from './styles';
 
@@ -29,12 +30,27 @@ export default function HomePage() {
         (quote) =>
           quote.client.toLowerCase().includes(search.toLowerCase()) ||
           quote.title.toLowerCase().includes(search.toLowerCase()) ||
-          quote.price.toString().includes(search),
+          formatCurrency(quote.price).includes(search),
       )
-      .filter(
-        (quote) => checked.length === 0 || checked.includes(quote.status),
-      );
-  }, [quotes, search, checked]);
+      .filter((quote) => checked.length === 0 || checked.includes(quote.status))
+      .sort((a, b) => {
+        switch (ordenation) {
+          case 'Mais antigo':
+            return (
+              new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+            );
+          case 'Maior valor':
+            return b.price - a.price;
+          case 'Menor valor':
+            return a.price - b.price;
+          case 'Mais recente':
+          default:
+            return (
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+            );
+        }
+      });
+  }, [quotes, search, checked, ordenation]);
 
   const handleApplyFilters = (
     nextChecked: StatusType[],

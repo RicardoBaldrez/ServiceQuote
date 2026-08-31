@@ -44,6 +44,7 @@ export default function BottomSheetFilter({
   const resetFilters = () => {
     setDraftChecked([]);
     setDraftOrdenation('Mais recente');
+    onApply([], 'Mais recente');
   };
 
   return (

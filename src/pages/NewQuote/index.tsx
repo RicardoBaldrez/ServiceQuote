@@ -53,6 +53,18 @@ export default function NewQuotePage() {
   const { totalPrice, totalPriceWithDiscount, totalDiscount } =
     calculateQuoteTotals(services, discountPct);
 
+  const handleDiscountChange = (text: string) => {
+    const numericText = text.replace(/[^0-9]/g, '');
+
+    if (numericText === '') {
+      setDiscountPct('');
+      return;
+    }
+
+    const clamped = Math.min(Number(numericText), 100);
+    setDiscountPct(String(clamped));
+  };
+
   const handleSaveItems = async () => {
     if (title === '' || client === '') {
       Alert.alert('Erro', 'Título e cliente são campos obrigatórios');
@@ -222,7 +234,7 @@ export default function NewQuotePage() {
                     placeholder=""
                     hasIcon
                     value={discountPct}
-                    onChangeText={setDiscountPct}
+                    onChangeText={handleDiscountChange}
                     keyboardType="numeric"
                     icon={
                       <MaterialIcons

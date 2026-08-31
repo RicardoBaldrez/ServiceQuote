@@ -6,7 +6,7 @@ import {
   useRoute,
 } from '@react-navigation/native';
 import { useCallback, useEffect, useState } from 'react';
-import { View, Text, Pressable, Alert, ScrollView } from 'react-native';
+import { View, Text, Pressable, Alert, ScrollView, Share } from 'react-native';
 
 import Button from '@/components/Button';
 import CompleteAmount from '@/components/CompleteAmount';
@@ -77,6 +77,33 @@ export default function QuoteDetailsPage() {
       Alert.alert('erro', 'Erro ao copiar orçamento.');
     }
   }, [quote, navigation]);
+
+  const handleShareQuote = useCallback(async () => {
+    if (!quote) return;
+
+    const itemsList = quote.items
+      .map(
+        (service) =>
+          `- ${service.title} (x${service.quantity}): R$ ${formatCurrency(service.price * service.quantity)}`,
+      )
+      .join('\n');
+
+    const message = [
+      `Orçamento #${quote.quoteNumber} - ${quote.title}`,
+      `Cliente: ${quote.client}`,
+      '',
+      itemsList,
+      '',
+      `Total: R$ ${formatCurrency(totalPriceWithDiscount)}`,
+    ].join('\n');
+
+    try {
+      await Share.share({ message });
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Erro', 'Erro ao compartilhar orçamento');
+    }
+  }, [quote, totalPriceWithDiscount]);
 
   useEffect(() => {
     getQuote();
@@ -216,6 +243,7 @@ export default function QuoteDetailsPage() {
         <Button
           label="Compartilhar"
           icon={<MaterialIcons name="share" size={20} color="#FFFFFF" />}
+          onPress={handleShareQuote}
         />
       </View>
     </View>

@@ -6,23 +6,24 @@ import {
   useRoute,
 } from '@react-navigation/native';
 import { useState, useEffect, useCallback } from 'react';
-import { View, Text, Pressable, ScrollView, Alert } from 'react-native';
+import { View, ScrollView, Alert } from 'react-native';
 
 import Button from '@/components/Button';
-import CompleteAmount from '@/components/CompleteAmount';
 import Header from '@/components/Header';
 import HeaderBackButton from '@/components/HeaderBackButton';
 import InfoCard from '@/components/InfoCard';
 import Input from '@/components/Input';
 import ServiceInformation from '@/components/ServiceInformation';
-import Status from '@/components/Status';
 import { StatusType } from '@/components/Status/types';
 
 import BottomSheetServices from '@/pages/NewQuote/components/BottomSheetServices';
+import InvestmentSummary from '@/pages/NewQuote/components/InvestmentSummary';
+import StatusSelector from '@/pages/NewQuote/components/StatusSelector';
 import { useServices } from '@/pages/NewQuote/hooks/useServices';
 import { RootStackParamList } from '@/routes';
 import { itemsStorage } from '@/storage/itemsStorage';
-import { calculateQuoteTotals, formatCurrency, generateId } from '@/utils';
+import { colors } from '@/theme/colors';
+import { calculateQuoteTotals, generateId } from '@/utils';
 
 import { styles } from './styles';
 
@@ -154,14 +155,14 @@ export default function NewQuotePage() {
             <View style={styles.sectionContent}>
               <Input
                 placeholder="Título"
-                placeholderTextColor="#676767"
+                placeholderTextColor={colors.textMuted}
                 hasIcon={false}
                 value={title}
                 onChangeText={setTitle}
               />
               <Input
                 placeholder="Cliente"
-                placeholderTextColor="#676767"
+                placeholderTextColor={colors.textMuted}
                 hasIcon={false}
                 value={client}
                 onChangeText={setClient}
@@ -169,30 +170,7 @@ export default function NewQuotePage() {
             </View>
           </InfoCard>
           <InfoCard title="Status" icon="sell">
-            <View style={styles.statusList}>
-              {Object.values(StatusType).map((status) => (
-                <Pressable
-                  key={status}
-                  onPress={() => setStatusChose(status)}
-                  style={styles.statusOption}
-                >
-                  <MaterialIcons
-                    name={
-                      statusChose === status
-                        ? 'radio-button-checked'
-                        : 'radio-button-unchecked'
-                    }
-                    size={24}
-                    color={statusChose === status ? '#6A46EB' : '#676767'}
-                    style={[
-                      styles.statusRadioIcon,
-                      { color: statusChose === status ? '#6A46EB' : '#676767' },
-                    ]}
-                  />
-                  <Status key={status} status={status} />
-                </Pressable>
-              ))}
-            </View>
+            <StatusSelector value={statusChose} onChange={setStatusChose} />
           </InfoCard>
           <InfoCard title="Serviços inclusos" icon="article">
             {services.map((service) => (
@@ -203,7 +181,9 @@ export default function NewQuotePage() {
               />
             ))}
             <Button
-              icon={<MaterialIcons name="add" size={24} color="#6A46EB" />}
+              icon={
+                <MaterialIcons name="add" size={24} color={colors.primary} />
+              }
               label="Adicionar serviço"
               variant="secondary"
               onPress={() => openBottomSheet()}
@@ -211,55 +191,14 @@ export default function NewQuotePage() {
             />
           </InfoCard>
           <InfoCard title="Investimento" icon="credit-card">
-            <View style={styles.investmentRow}>
-              <Text>Subtotal </Text>
-              <View style={styles.investmentSubtotalMeta}>
-                <Text style={styles.investmentItemsCount}>
-                  {services.length} itens
-                </Text>
-                <Text style={styles.investmentSubtotalValue}>
-                  R$ {formatCurrency(totalPrice)}
-                </Text>
-              </View>
-            </View>
-            <View style={styles.discountRow}>
-              <View style={styles.discountField}>
-                <Text>Desconto</Text>
-                <View style={styles.discountInputWrapper}>
-                  <Input
-                    placeholder=""
-                    hasIcon
-                    value={discountPct}
-                    onChangeText={handleDiscountChange}
-                    keyboardType="numeric"
-                    icon={
-                      <MaterialIcons
-                        name="percent"
-                        size={14}
-                        color="black"
-                        style={styles.percentIcon}
-                      />
-                    }
-                  />
-                </View>
-              </View>
-              {totalDiscount > 0 && (
-                <Text style={styles.discountValue}>
-                  -R$ {formatCurrency(totalDiscount)}
-                </Text>
-              )}
-            </View>
-            <View style={styles.totalRow}>
-              <Text style={styles.totalLabel}>Valor total</Text>
-              <View>
-                {totalDiscount > 0 && (
-                  <Text style={styles.totalStrikethrough}>
-                    R$ {formatCurrency(totalPrice)}
-                  </Text>
-                )}
-                <CompleteAmount amount={totalPriceWithDiscount} />
-              </View>
-            </View>
+            <InvestmentSummary
+              itemCount={services.length}
+              totalPrice={totalPrice}
+              totalDiscount={totalDiscount}
+              totalPriceWithDiscount={totalPriceWithDiscount}
+              discountPct={discountPct}
+              onDiscountChangeText={handleDiscountChange}
+            />
           </InfoCard>
         </View>
         <View style={styles.footer}>
@@ -269,7 +208,7 @@ export default function NewQuotePage() {
             onPress={() => navigation.goBack()}
           />
           <Button
-            icon={<MaterialIcons name="check" size={24} color="#FFFFFF" />}
+            icon={<MaterialIcons name="check" size={24} color={colors.white} />}
             label="Salvar"
             onPress={handleSaveItems}
           />

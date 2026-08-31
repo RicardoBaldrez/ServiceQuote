@@ -68,7 +68,7 @@ export default function QuoteDetailsPage() {
     <View style={styles.containerGeral}>
       <Header>
         <HeaderBackButton
-          label={`Orçamento #${quote.quoteNumber}`}
+          label={`Orçamento #${quote.quoteNumber ?? ''}`}
           onPress={() => navigation.goBack()}
           rightSlot={<Status status={quote.status} />}
         />
@@ -79,7 +79,7 @@ export default function QuoteDetailsPage() {
       >
         <QuoteSummaryCard quote={quote} />
         <InfoCard title="Serviços inclusos" icon="article">
-          {quote.items.map((service) => (
+          {quote?.items?.map((service) => (
             <ServiceInformation key={service.id} service={service} />
           ))}
         </InfoCard>

@@ -1,7 +1,6 @@
-import { MaterialIcons } from '@expo/vector-icons';
 import { Text, View } from 'react-native';
 
-import { colors } from '@/theme/colors';
+import QuoteInfoIcon from '@/pages/QuoteDetails/components/QuoteInfoIcon';
 import { Quote } from '@/types/quote';
 import { formatDate } from '@/utils';
 
@@ -15,9 +14,7 @@ export default function QuoteSummaryCard({ quote }: QuoteSummaryCardProps) {
   return (
     <View style={styles.quoteInfoCard}>
       <View style={styles.quoteInfoHeader}>
-        <View style={styles.quoteInfoIcon}>
-          <MaterialIcons name="storefront" size={20} color={colors.primary} />
-        </View>
+        <QuoteInfoIcon icon="storefront" />
         <Text style={styles.quoteInfoTitle}>{quote.title}</Text>
       </View>
       <View style={styles.quoteInfoClient}>

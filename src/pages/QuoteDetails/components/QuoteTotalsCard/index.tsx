@@ -1,9 +1,8 @@
-import { MaterialIcons } from '@expo/vector-icons';
 import { Text, View } from 'react-native';
 
 import CompleteAmount from '@/components/CompleteAmount';
 
-import { colors } from '@/theme/colors';
+import QuoteInfoIcon from '@/pages/QuoteDetails/components/QuoteInfoIcon';
 import { formatCurrency } from '@/utils';
 
 import { styles } from './styles';
@@ -26,9 +25,7 @@ export default function QuoteTotalsCard({
   return (
     <View style={styles.totalsContainer}>
       <View style={styles.totalsRow}>
-        <View style={styles.quoteInfoIcon}>
-          <MaterialIcons name="attach-money" size={20} color={colors.primary} />
-        </View>
+        <QuoteInfoIcon icon="attach-money" />
         <View style={styles.totalsContent}>
           <View style={styles.subtotalRow}>
             <Text style={styles.infoLabel}>Subtotal</Text>

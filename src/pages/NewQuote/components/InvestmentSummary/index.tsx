@@ -4,6 +4,7 @@ import { Text, View } from 'react-native';
 import CompleteAmount from '@/components/CompleteAmount';
 import Input from '@/components/Input';
 
+import { colors } from '@/theme/colors';
 import { formatCurrency } from '@/utils';
 
 import { styles } from './styles';
@@ -50,7 +51,7 @@ export default function InvestmentSummary({
                 <MaterialIcons
                   name="percent"
                   size={14}
-                  color="black"
+                  color={colors.textPrimary}
                   style={styles.percentIcon}
                 />
               }

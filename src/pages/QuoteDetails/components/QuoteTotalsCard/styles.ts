@@ -1,10 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { StatusColors, StatusType } from '@/components/Status/types';
-
 import { colors } from '@/theme/colors';
-
-const approvedColors = StatusColors[StatusType.Approved];
 
 export const styles = StyleSheet.create({
   totalsContainer: {
@@ -17,14 +13,6 @@ export const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'space-between',
     gap: 16,
-  },
-  quoteInfoIcon: {
-    backgroundColor: colors.primaryTint,
-    borderRadius: 8,
-    height: 40,
-    width: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   totalsContent: {
     flex: 1,
@@ -58,16 +46,16 @@ export const styles = StyleSheet.create({
   },
   discountBadge: {
     fontSize: 12,
-    color: approvedColors.text,
+    color: colors.success,
     paddingVertical: 2,
     paddingHorizontal: 6,
-    backgroundColor: approvedColors.background,
+    backgroundColor: colors.successTint,
     borderRadius: 4,
   },
   discountValue: {
     fontSize: 12,
     fontWeight: 'bold',
-    color: approvedColors.text,
+    color: colors.success,
   },
   totalRow: {
     marginTop: 8,

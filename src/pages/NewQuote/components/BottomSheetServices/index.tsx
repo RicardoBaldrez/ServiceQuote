@@ -6,6 +6,7 @@ import BottomSheet from '@/components/BottomSheet';
 import Button from '@/components/Button';
 import Input from '@/components/Input';
 
+import { colors } from '@/theme/colors';
 import { Service } from '@/types/service';
 import { generateId } from '@/utils';
 
@@ -105,12 +106,14 @@ export default function BottomSheetServices({
             <Button
               variant="rounded"
               onPress={handleDelete}
-              icon={<MaterialIcons name="delete" size={24} color="#DB4D4D" />}
+              icon={
+                <MaterialIcons name="delete" size={24} color={colors.danger} />
+              }
             />
           )}
           <Button
             label="Salvar"
-            icon={<MaterialIcons name="check" size={24} color="#FFFFFF" />}
+            icon={<MaterialIcons name="check" size={24} color={colors.white} />}
             onPress={handleSave}
           />
         </View>

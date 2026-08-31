@@ -2,6 +2,8 @@ export const colors = {
   primary: '#6A46EB',
   primaryTint: '#DFDAF2',
   danger: '#DB4D4D',
+  success: '#30752F',
+  successTint: '#BFF7BE',
   white: '#FFFFFF',
   textPrimary: '#0F0F0F',
   textSecondary: '#4A4A4A',

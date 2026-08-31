@@ -17,14 +17,6 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: colors.borderLight,
   },
-  quoteInfoIcon: {
-    backgroundColor: colors.primaryTint,
-    borderRadius: 8,
-    height: 40,
-    width: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   quoteInfoTitle: {
     fontSize: 18,
     fontWeight: 'bold',

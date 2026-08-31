@@ -6,26 +6,23 @@ import {
   useRoute,
 } from '@react-navigation/native';
 import { useCallback, useEffect, useState } from 'react';
-import { View, Text, Alert, ScrollView, Share } from 'react-native';
+import { View, Text, Alert, ScrollView } from 'react-native';
 
 import Button from '@/components/Button';
-import CompleteAmount from '@/components/CompleteAmount';
 import Header from '@/components/Header';
 import HeaderBackButton from '@/components/HeaderBackButton';
 import InfoCard from '@/components/InfoCard';
 import ServiceInformation from '@/components/ServiceInformation';
 import Status from '@/components/Status';
-import { StatusType } from '@/components/Status/types';
 
+import QuoteSummaryCard from '@/pages/QuoteDetails/components/QuoteSummaryCard';
+import QuoteTotalsCard from '@/pages/QuoteDetails/components/QuoteTotalsCard';
+import { useQuoteActions } from '@/pages/QuoteDetails/hooks/useQuoteActions';
 import { RootStackParamList } from '@/routes';
 import { itemsStorage } from '@/storage/itemsStorage';
+import { colors } from '@/theme/colors';
 import { Quote } from '@/types/quote';
-import {
-  calculateQuoteTotals,
-  formatCurrency,
-  formatDate,
-  generateId,
-} from '@/utils';
+import { calculateQuoteTotals } from '@/utils';
 
 import { styles } from './styles';
 
@@ -52,64 +49,8 @@ export default function QuoteDetailsPage() {
 
   const hasDiscount = Number(quote?.discountPct) > 0;
 
-  const handleRemoveQuote = useCallback(async () => {
-    try {
-      await itemsStorage.remove(id);
-      Alert.alert('Sucesso', 'Orçamento removido com sucesso');
-      navigation.goBack();
-    } catch (error) {
-      console.error(error);
-      Alert.alert('Erro', 'Erro ao remover orçamento');
-    }
-  }, [navigation, id]);
-
-  const handleCopyQuote = useCallback(async () => {
-    try {
-      if (!quote) return;
-
-      const now = new Date().toISOString();
-
-      await itemsStorage.add({
-        ...quote,
-        id: generateId(),
-        status: StatusType.Draft,
-        createdAt: now,
-        updatedAt: now,
-      });
-      Alert.alert('Sucesso', 'Orçamento copiado com sucesso');
-      navigation.navigate('Home');
-    } catch (error) {
-      console.error(error);
-      Alert.alert('erro', 'Erro ao copiar orçamento.');
-    }
-  }, [quote, navigation]);
-
-  const handleShareQuote = useCallback(async () => {
-    if (!quote) return;
-
-    const itemsList = quote.items
-      .map(
-        (service) =>
-          `- ${service.title} (x${service.quantity}): R$ ${formatCurrency(service.price * service.quantity)}`,
-      )
-      .join('\n');
-
-    const message = [
-      `Orçamento #${quote.quoteNumber} - ${quote.title}`,
-      `Cliente: ${quote.client}`,
-      '',
-      itemsList,
-      '',
-      `Total: R$ ${formatCurrency(totalPriceWithDiscount)}`,
-    ].join('\n');
-
-    try {
-      await Share.share({ message });
-    } catch (error) {
-      console.error(error);
-      Alert.alert('Erro', 'Erro ao compartilhar orçamento');
-    }
-  }, [quote, totalPriceWithDiscount]);
+  const { handleRemoveQuote, handleCopyQuote, handleShareQuote } =
+    useQuoteActions({ id, quote, totalPriceWithDiscount, navigation });
 
   useEffect(() => {
     getQuote();
@@ -127,93 +68,38 @@ export default function QuoteDetailsPage() {
     <View style={styles.containerGeral}>
       <Header>
         <HeaderBackButton
-          label={`Orçamento #${quote?.quoteNumber}`}
+          label={`Orçamento #${quote.quoteNumber}`}
           onPress={() => navigation.goBack()}
-          rightSlot={<Status status={quote?.status} />}
+          rightSlot={<Status status={quote.status} />}
         />
       </Header>
       <ScrollView
         style={styles.containerDetails}
         contentContainerStyle={styles.containerDetailsContent}
       >
-        <View style={styles.quoteInfoCard}>
-          <View style={styles.quoteInfoHeader}>
-            <View style={styles.quoteInfoIcon}>
-              <MaterialIcons name="storefront" size={20} color="#6A46EB" />
-            </View>
-            <Text style={styles.quoteInfoTitle}>{quote?.title}</Text>
-          </View>
-          <View style={styles.quoteInfoClient}>
-            <Text style={styles.quoteTitleInfo}>Cliente</Text>
-            <Text style={styles.quoteValueInfo}>{quote?.client}</Text>
-          </View>
-          <View style={styles.quoteInfoDatesRow}>
-            <View style={styles.quoteInfoDateItem}>
-              <Text style={styles.quoteTitleInfo}>Criado em</Text>
-              <Text style={styles.quoteValueInfo}>
-                {formatDate(quote?.createdAt)}
-              </Text>
-            </View>
-            <View style={styles.quoteInfoDateItem}>
-              <Text style={styles.quoteTitleInfo}>Atualizado em</Text>
-              <Text style={styles.quoteValueInfo}>
-                {formatDate(quote?.updatedAt)}
-              </Text>
-            </View>
-          </View>
-        </View>
+        <QuoteSummaryCard quote={quote} />
         <InfoCard title="Serviços inclusos" icon="article">
-          {quote?.items?.map((service) => (
+          {quote.items.map((service) => (
             <ServiceInformation key={service.id} service={service} />
           ))}
         </InfoCard>
         <InfoCard>
-          <View style={styles.totalsContainer}>
-            <View style={styles.totalsRow}>
-              <View style={styles.quoteInfoIcon}>
-                <MaterialIcons name="attach-money" size={20} color="#6A46EB" />
-              </View>
-              <View style={styles.totalsContent}>
-                <View style={styles.subtotalRow}>
-                  <Text style={styles.infoLabel}>Subtotal</Text>
-                  <Text
-                    style={[
-                      styles.subtotalValue,
-                      hasDiscount && styles.subtotalValueStrikethrough,
-                    ]}
-                  >
-                    R$ {formatCurrency(totalPrice)}
-                  </Text>
-                </View>
-                {hasDiscount && (
-                  <View style={styles.discountRow}>
-                    <View style={styles.discountLabelWrapper}>
-                      <Text style={styles.infoLabel}>Desconto</Text>
-                      <View>
-                        <Text style={styles.discountBadge}>
-                          {quote.discountPct}% off
-                        </Text>
-                      </View>
-                    </View>
-                    <Text style={styles.discountValue}>
-                      - R$ {formatCurrency(totalDiscount)}
-                    </Text>
-                  </View>
-                )}
-                <View style={styles.totalRow}>
-                  <Text style={styles.totalLabel}>Investimento total</Text>
-                  <CompleteAmount amount={totalPriceWithDiscount} />
-                </View>
-              </View>
-            </View>
-          </View>
+          <QuoteTotalsCard
+            totalPrice={totalPrice}
+            totalDiscount={totalDiscount}
+            totalPriceWithDiscount={totalPriceWithDiscount}
+            discountPct={quote.discountPct}
+            hasDiscount={hasDiscount}
+          />
         </InfoCard>
       </ScrollView>
       <View style={styles.footer}>
         <View style={styles.footerIconButtons}>
           <Button
             variant="rounded"
-            icon={<MaterialIcons name="delete" size={20} color="#DB4D4D" />}
+            icon={
+              <MaterialIcons name="delete" size={20} color={colors.danger} />
+            }
             onPress={() =>
               Alert.alert(
                 'Excluir cotação',
@@ -231,19 +117,25 @@ export default function QuoteDetailsPage() {
           <Button
             variant="rounded"
             icon={
-              <MaterialIcons name="content-copy" size={20} color="#6A46EB" />
+              <MaterialIcons
+                name="content-copy"
+                size={20}
+                color={colors.primary}
+              />
             }
             onPress={handleCopyQuote}
           />
           <Button
             variant="rounded"
-            icon={<MaterialIcons name="edit" size={20} color="#6A46EB" />}
-            onPress={() => navigation.navigate('NewQuote', { id: quote?.id })}
+            icon={
+              <MaterialIcons name="edit" size={20} color={colors.primary} />
+            }
+            onPress={() => navigation.navigate('NewQuote', { id: quote.id })}
           />
         </View>
         <Button
           label="Compartilhar"
-          icon={<MaterialIcons name="share" size={20} color="#FFFFFF" />}
+          icon={<MaterialIcons name="share" size={20} color={colors.white} />}
           onPress={handleShareQuote}
         />
       </View>

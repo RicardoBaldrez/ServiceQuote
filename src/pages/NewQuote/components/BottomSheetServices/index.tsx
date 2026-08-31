@@ -73,8 +73,25 @@ export default function BottomSheetServices({
 
   const handleDelete = () => {
     if (!service) return;
-    onDelete(service);
-    onClose();
+
+    Alert.alert(
+      'Excluir serviço',
+      'Tem certeza que deseja excluir esse serviço?',
+      [
+        {
+          text: 'Cancelar',
+          style: 'cancel',
+        },
+        {
+          text: 'Excluir',
+          onPress: () => {
+            onDelete(service);
+            Alert.alert('Sucesso', 'Serviço removido com sucesso');
+            onClose();
+          },
+        },
+      ],
+    );
   };
 
   return (

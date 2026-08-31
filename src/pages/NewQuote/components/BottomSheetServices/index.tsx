@@ -1,6 +1,6 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { Alert, View } from 'react-native';
 
 import BottomSheet from '@/components/BottomSheet';
 import Button from '@/components/Button';
@@ -40,21 +40,32 @@ export default function BottomSheetServices({
   }, [service]);
 
   const handleSave = () => {
+    const trimmedTitle = title.trim();
+    const trimmedDescription = description.trim();
+
+    if (
+      trimmedTitle === '' ||
+      trimmedDescription === '' ||
+      price === '' ||
+      quantity === ''
+    ) {
+      Alert.alert('Erro', 'Todos os campos são obrigatórios');
+      return;
+    }
+
+    const servicePayload = {
+      title: trimmedTitle,
+      description: trimmedDescription,
+      price: Number(price),
+      quantity: Number(quantity),
+    };
+
     if (service) {
-      onEdit({
-        id: service.id,
-        title,
-        description,
-        price: Number(price),
-        quantity: Number(quantity),
-      });
+      onEdit({ id: service.id, ...servicePayload });
     } else {
       onCreate({
         id: Math.random().toString(36).substring(2),
-        title,
-        description,
-        price: Number(price),
-        quantity: Number(quantity),
+        ...servicePayload,
       });
     }
     onClose();
@@ -111,6 +122,7 @@ export default function BottomSheetServices({
               hasIcon={false}
               value={price}
               onChangeText={setPrice}
+              keyboardType="numeric"
             />
           </View>
           <View style={styles.quantityInputWrapper}>
@@ -119,6 +131,7 @@ export default function BottomSheetServices({
               hasIcon={false}
               value={quantity}
               onChangeText={setQuantity}
+              keyboardType="numeric"
             />
           </View>
         </View>

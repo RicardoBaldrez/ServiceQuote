@@ -59,6 +59,11 @@ export default function NewQuotePage() {
       return;
     }
 
+    if (services.length === 0) {
+      Alert.alert('Erro', 'Ao menos um serviço é necessário no orçamento');
+      return;
+    }
+
     if (id) {
       const updateItem = {
         id,
